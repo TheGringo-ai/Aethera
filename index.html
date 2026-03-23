@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Aethera — Your Cosmic Profile</title>
+<meta name="description" content="Discover your cosmic identity through 8 ancient divination systems powered by AI">
+<meta name="theme-color" content="#0a0a1a">
+<!-- Open Graph -->
+<meta property="og:title" content="Aethera — Discover Your Cosmic Identity">
+<meta property="og:description" content="8 ancient divination systems powered by AI. Numerology, astrology, tarot, palm reading, and more. Free.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aethera.live">
+<meta property="og:image" content="https://aethera.live/v1/aethera/og-image">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Aethera — Your Cosmic Profile">
+<meta name="twitter:description" content="What do the stars, numbers, and ancient calendars say about you? Find out free.">
+<meta name="twitter:image" content="https://aethera.live/v1/aethera/og-image">
+<!-- PWA Manifest (inline) -->
+<link rel="manifest" href='data:application/json,{"name":"Aethera — Cosmic Profile","short_name":"Aethera","start_url":"/v1/aethera/app","display":"standalone","background_color":"#0a0a1a","theme_color":"#0a0a1a","icons":[{"src":"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>✨</text></svg>","sizes":"any","type":"image/svg+xml"}]}'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/v1/aethera/assets/css/styles.css">
+</head>
+<body>
+
+<!-- Stars Canvas -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- LANDING PAGE                                                -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="landing-screen">
+<div class="landing-inner">
+
+  <!-- Hero Section -->
+  <img src="/v1/aethera/assets/hero" alt="Aethera Oracle" class="landing-hero-img">
+  <h1 class="landing-title">Aethera</h1>
+  <p class="landing-subtitle">Your Cosmic Identity, Revealed</p>
+  <p class="landing-tagline">9 divination systems. One powerful AI reading.<br>Discover who you truly are.</p>
+
+  <!-- CTA Buttons -->
+  <button class="landing-cta" onclick="showAuthModal('signup')">Start Free — 30 Days Unlimited</button>
+  <div class="landing-sub-cta">No credit card required</div>
+  <div style="margin-top:12px;font-size:.9rem;color:var(--muted)">
+    Already have an account? <a onclick="showAuthModal('signin')" style="color:var(--gold);cursor:pointer;text-decoration:underline;font-weight:500">Sign in</a>
+  </div>
+
+  <!-- What You Get: Free Tier -->
+  <div class="landing-section">
+    <h2 class="landing-section-title">Free for 30 Days</h2>
+    <p class="landing-section-sub">Everything unlocked. No limits. No credit card.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-icon">&#128302;</div>
+        <div class="fc-title">3 Readings Daily</div>
+        <div class="fc-desc">Full cosmic profile powered by 8 divination systems</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#127183;</div>
+        <div class="fc-title">Tarot Cards</div>
+        <div class="fc-desc">Draw past, present &amp; future cards with AI interpretation</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#9995;</div>
+        <div class="fc-title">Palm Reading</div>
+        <div class="fc-desc">Upload your hand &amp; get AI-powered line analysis</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#10084;&#65039;</div>
+        <div class="fc-title">Compatibility</div>
+        <div class="fc-desc">Check cosmic chemistry between any two people</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#127911;</div>
+        <div class="fc-title">AI Voices</div>
+        <div class="fc-desc">Hear your reading in Shimmer, Nova, Echo &amp; more</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#128302;</div>
+        <div class="fc-title">Aura Photo</div>
+        <div class="fc-desc">See your energy field glow around your selfie</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divination Systems -->
+  <div class="landing-section">
+    <h2 class="landing-section-title">9 Systems, One Reading</h2>
+    <p class="landing-section-sub">Every reading synthesizes wisdom from across civilizations</p>
+    <div class="systems-list">
+      <div class="system-pill"><span>&#128290;</span> Numerology</div>
+      <div class="system-pill"><span>&#9800;</span> Western Astrology</div>
+      <div class="system-pill"><span>&#128009;</span> Chinese Zodiac</div>
+      <div class="system-pill"><span>&#127795;</span> Celtic Tree</div>
+      <div class="system-pill"><span>&#127963;</span> Mayan Tzolkin</div>
+      <div class="system-pill"><span>&#128302;</span> Aura &amp; Energy</div>
+      <div class="system-pill"><span>&#9878;</span> Human Design</div>
+      <div class="system-pill"><span>&#127761;</span> Moon Phase</div>
+      <div class="system-pill"><span>&#9889;</span> Biorhythms</div>
+    </div>
+  </div>
+
+  <!-- Social Proof -->
+  <div class="proof-cards">
+    <div class="proof-card">
+      <div class="pc-num">10</div>
+      <div class="pc-text">divination systems in one reading</div>
+    </div>
+    <div class="proof-card">
+      <div class="pc-num">8</div>
+      <div class="pc-text">languages supported</div>
+    </div>
+    <div class="proof-card">
+      <div class="pc-num">AI</div>
+      <div class="pc-text">powered personal insights</div>
+    </div>
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="landing-section" style="padding-bottom:40px">
+    <h2 class="landing-section-title" style="font-size:1.6rem">Ready to discover your cosmic identity?</h2>
+    <button class="landing-cta" onclick="showAuthModal('signup')" style="margin-top:16px">Create Free Account</button>
+    <div class="landing-sub-cta">30 days free &bull; Then just $4.99/mo</div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- FREE TRIAL FORM                                             -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="intro-screen" style="display:none">
+<div class="intro-inner">
+
+  <!-- Language Selector -->
+  <div class="lang-bar" id="langBar"></div>
+
+  <div class="intro-header" style="padding:20px 0 16px">
+    <h2 style="font-size:1.6rem;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Your Cosmic Reading</h2>
+    <p class="subtitle" style="font-size:.9rem">Enter your details to begin</p>
+  </div>
+
+  <div class="form-group">
+    <label data-i18n="label_name">Your Name</label>
+    <input type="text" id="inp-name" data-i18n-placeholder="ph_name" placeholder="Enter your full name" autocomplete="name">
+  </div>
+  <div class="form-group">
+    <label data-i18n="label_dob">Date of Birth</label>
+    <input type="date" id="inp-birthdate">
+  </div>
+  <div class="optional-toggle full-profile-only" style="display:none">
+    <button onclick="document.querySelector('.optional-fields').classList.toggle('show')" data-i18n="toggle_optional">+ Birth time &amp; location (optional)</button>
+  </div>
+  <div class="optional-fields full-profile-only" style="display:none">
+    <div class="form-group">
+      <label data-i18n="label_time">Birth Time</label>
+      <input type="time" id="inp-birth-time">
+    </div>
+    <div class="form-group">
+      <label data-i18n="label_location">Birth Location</label>
+      <input type="text" id="inp-location" data-i18n-placeholder="ph_location" placeholder="City, Country">
+    </div>
+  </div>
+
+  <div class="form-group full-profile-only" style="display:none">
+    <label data-i18n="label_email">Your Email</label>
+    <input type="email" id="inp-email" data-i18n-placeholder="ph_email" placeholder="your@email.com" autocomplete="email">
+  </div>
+
+  <div class="section-label full-profile-only" data-i18n="section_questions" style="display:none">5 Quick Questions</div>
+
+  <div class="question full-profile-only" data-q="0" style="display:none">
+    <p data-i18n="q0">When facing a challenge, you...</p>
+    <div class="options">
+      <button onclick="answer(0,1)" data-i18n="q0a1">Analyze it</button>
+      <button onclick="answer(0,2)" data-i18n="q0a2">Feel through it</button>
+      <button onclick="answer(0,3)" data-i18n="q0a3">Act on instinct</button>
+      <button onclick="answer(0,4)" data-i18n="q0a4">Wait and observe</button>
+    </div>
+  </div>
+  <div class="question full-profile-only" data-q="1" style="display:none">
+    <p data-i18n="q1">In a group, you naturally...</p>
+    <div class="options">
+      <button onclick="answer(1,1)" data-i18n="q1a1">Lead</button>
+      <button onclick="answer(1,2)" data-i18n="q1a2">Listen</button>
+      <button onclick="answer(1,3)" data-i18n="q1a3">Create</button>
+      <button onclick="answer(1,4)" data-i18n="q1a4">Observe</button>
+    </div>
+  </div>
+  <div class="question full-profile-only" data-q="2" style="display:none">
+    <p data-i18n="q2">Your ideal environment is...</p>
+    <div class="options">
+      <button onclick="answer(2,1)" data-i18n="q2a1">Mountains</button>
+      <button onclick="answer(2,2)" data-i18n="q2a2">Ocean</button>
+      <button onclick="answer(2,3)" data-i18n="q2a3">City</button>
+      <button onclick="answer(2,4)" data-i18n="q2a4">Forest</button>
+    </div>
+  </div>
+  <div class="question full-profile-only" data-q="3" style="display:none">
+    <p data-i18n="q3">You recharge by...</p>
+    <div class="options">
+      <button onclick="answer(3,1)" data-i18n="q3a1">Solitude</button>
+      <button onclick="answer(3,2)" data-i18n="q3a2">Friends</button>
+      <button onclick="answer(3,3)" data-i18n="q3a3">Adventure</button>
+      <button onclick="answer(3,4)" data-i18n="q3a4">Creating</button>
+    </div>
+  </div>
+  <div class="question full-profile-only" data-q="4" style="display:none">
+    <p data-i18n="q4">What draws you most?</p>
+    <div class="options">
+      <button onclick="answer(4,1)" data-i18n="q4a1">Truth</button>
+      <button onclick="answer(4,2)" data-i18n="q4a2">Beauty</button>
+      <button onclick="answer(4,3)" data-i18n="q4a3">Power</button>
+      <button onclick="answer(4,4)" data-i18n="q4a4">Harmony</button>
+    </div>
+  </div>
+
+  <!-- Focus Area -->
+  <div class="focus-section">
+    <p data-i18n="focus_q">What's weighing on your mind right now?</p>
+    <div class="focus-options">
+      <button class="focus-btn" onclick="setFocus('love')" data-focus="love" data-i18n="focus_love">Love</button>
+      <button class="focus-btn" onclick="setFocus('work')" data-focus="work" data-i18n="focus_work">Work</button>
+      <button class="focus-btn" onclick="setFocus('money')" data-focus="money" data-i18n="focus_money">Money</button>
+      <button class="focus-btn" onclick="setFocus('health')" data-focus="health" data-i18n="focus_health">Health</button>
+      <button class="focus-btn" onclick="setFocus('purpose')" data-focus="purpose" data-i18n="focus_purpose">Purpose</button>
+    </div>
+  </div>
+
+  <button class="cta" id="submitBtn" onclick="getReading()" disabled data-i18n="cta_reveal">Reveal My Reading</button>
+
+  <p style="margin-top:24px;font-size:.7rem;color:var(--dim);text-align:center;line-height:1.5;max-width:340px;margin-left:auto;margin-right:auto">Aethera is for entertainment and self-reflection purposes. Not a substitute for professional advice.</p>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- WELCOME BACK SCREEN                                        -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="welcome-screen">
+<div class="wb-inner">
+  <div class="hero-image" style="margin-bottom:16px">
+    <img src="/v1/aethera/assets/hero" alt="Aethera Oracle" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid #2a2a5a;box-shadow:0 0 40px #7c5bf533,0 0 80px #00d4aa22">
+  </div>
+  <h2 class="wb-greeting" id="wb-greeting">Welcome back</h2>
+  <p class="wb-signs" id="wb-signs"></p>
+
+  <div class="wb-profile-card" id="wb-profile-card">
+    <div class="signs-grid" id="wb-signs-grid"></div>
+  </div>
+
+  <button class="wb-cta" onclick="getReturnReading()">Get Today's Reading</button>
+  <button class="wb-cta-secondary" id="wb-view-last" onclick="showLastReading()" style="display:none">View Last Reading</button>
+
+  <div class="wb-tier-badge" id="wb-tier-badge"></div>
+
+  <div class="wb-links">
+    <a onclick="editProfile()">Edit Profile</a>
+    <a onclick="signOut()">Sign Out</a>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- UPGRADE MODAL                                              -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="upgrade-overlay" id="upgradeOverlay" role="dialog" aria-modal="true" aria-label="Upgrade">
+<div class="upgrade-modal" id="upgradeModalContent">
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- AUTH MODAL (Firebase)                                       -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="auth-overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+<div class="auth-modal">
+  <button class="auth-close" onclick="closeAuthModal()">&times;</button>
+  <h2 id="authTitle">Create Account</h2>
+  <button class="auth-google-btn" onclick="googleSignIn()">
+    <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+    Sign in with Google
+  </button>
+  <div class="auth-divider">or</div>
+  <div class="auth-form">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="auth-email" placeholder="your@email.com" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="auth-password" placeholder="At least 6 characters" autocomplete="current-password">
+    </div>
+    <button class="auth-submit" id="authSubmitBtn" onclick="emailAuth()">Create Account</button>
+  </div>
+  <div class="auth-toggle" id="authToggle">
+    Already have an account? <a onclick="toggleAuthMode()">Sign In</a>
+  </div>
+  <div class="auth-error" id="authError"></div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- LOADING SCREEN                                             -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="loading-screen">
+  <div class="loading-orb"></div>
+  <p class="loading-text" id="loadMsg">Consulting the stars...</p>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- RESULTS: TAB-BASED BROWSING                                -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="results-screen">
+
+<!-- Sub-nav -->
+<div class="sub-nav" id="subNav"></div>
+
+<!-- Bottom navigation -->
+<nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
+  <button class="nav-btn active" data-nav="home" onclick="navTo('home')" aria-label="Home">
+    <span class="nav-icon">&#10022;</span><span>Home</span>
+  </button>
+  <button class="nav-btn" data-nav="explore" onclick="navTo('explore')" aria-label="Explore">
+    <span class="nav-icon">&#128302;</span><span>Explore</span>
+  </button>
+  <button class="nav-btn" data-nav="tools" onclick="navTo('tools')" aria-label="Tools">
+    <span class="nav-icon">&#127183;</span><span>Tools</span>
+  </button>
+  <button class="nav-btn" data-nav="social" onclick="navTo('social')" aria-label="Social">
+    <span class="nav-icon">&#10084;&#65039;</span><span>Social</span>
+  </button>
+  <button class="nav-btn" data-nav="me" onclick="navTo('me')" aria-label="Settings">
+    <span class="nav-icon" id="meNavIcon">&#9881;</span><span>Me</span>
+  </button>
+</nav>
+
+<!-- Signup Banner -->
+<div class="signup-banner" id="signupBanner" style="display:none">
+  <div class="sb-title">&#10024; Unlock all features free for 30 days</div>
+  <div class="signup-banner-actions">
+    <button class="sb-cta" onclick="showAuthModal('signup')">Sign Up</button>
+    <button class="sb-signin" onclick="showAuthModal('signin')">Sign In</button>
+  </div>
+  <button class="sb-dismiss" onclick="dismissSignupBanner()">&times;</button>
+</div>
+
+<div class="tab-content-area">
+
+  <!-- TAB: Profile -->
+  <div class="tab-pane active" id="tab-profile">
+    <div style="max-width:420px;margin:0 auto;padding:24px 16px;text-align:center">
+      <div class="profile-card" id="cosmicCard">
+        <div class="p-name" id="r-name"></div>
+        <div class="p-archetype" id="r-archetype"></div>
+        <div class="p-tagline" id="r-tagline"></div>
+        <div class="signs-grid" id="r-signs"></div>
+      </div>
+      <div style="margin-top:28px;text-align:left">
+        <button class="read-btn" onclick="readAloud('profile-read-content',this)">&#128264; Read Aloud</button>
+        <div id="profile-read-content">
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:3px;color:var(--rose);margin-bottom:12px" data-i18n="tension_label">There is a tension within you</div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;line-height:1.6;color:var(--text)" id="r-tension"></p>
+          <div style="width:40px;height:1px;background:var(--gold);margin:24px auto;opacity:.4"></div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-style:italic;line-height:1.6;color:var(--gold);text-align:center" id="r-shock"></p>
+        </div>
+        <div style="font-size:.7rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-top:12px">&#10022; Aethera</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Full Reading -->
+  <div class="tab-pane" id="tab-reading">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:8px">Your Cosmic Reading</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">A synthesis of all 8 divination systems</p>
+      <button class="read-btn" onclick="readAloud('reading-read-content',this)">&#128264; Read Aloud</button>
+      <div id="reading-read-content">
+        <div class="focus-card" id="r-focus-card" style="margin-bottom:24px">
+          <div class="focus-label" id="r-focus-label"></div>
+          <div class="focus-body" id="r-focus-body"></div>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin:24px 0 12px;color:var(--gold)">Full Cosmic Reading</h3>
+        <div class="reading-text" id="r-reading" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;line-height:1.8"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Numerology -->
+  <div class="tab-pane" id="tab-numerology">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">&#128290; Numerology</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">The hidden meaning in your name and birthdate</p>
+      <button class="read-btn" onclick="readAloud('r-numerology',this)">&#128264; Read Aloud</button>
+      <div id="r-numerology"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Astrology -->
+  <div class="tab-pane" id="tab-astrology">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">&#9800; Western Astrology</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">Your sun sign and elemental nature</p>
+      <div id="r-astrology"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Chinese Zodiac -->
+  <div class="tab-pane" id="tab-chinese">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">&#128009; Chinese Zodiac</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">Your animal spirit and elemental force</p>
+      <button class="read-btn" onclick="readAloud('r-chinese',this)">&#128264; Read Aloud</button>
+      <div id="r-chinese"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Today's Energy -->
+  <div class="tab-pane" id="tab-today">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px;text-align:center">
+      <h2 style="margin-bottom:4px" data-i18n="today_label">Today's Cosmic Energy</h2>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:24px">Your biorhythm cycles right now</p>
+      <div class="moon-phase-display" id="r-moon-phase">
+        <div class="moon-emoji" id="r-moon-emoji"></div>
+        <div class="moon-name" id="r-moon-name"></div>
+        <div class="moon-illum" id="r-moon-illum"></div>
+        <div class="moon-guidance" id="r-moon-guidance"></div>
+        <div class="moon-countdown">
+          <div class="cd-item"><div class="cd-val" id="r-moon-full-days">--</div><div class="cd-label">to full moon</div></div>
+          <div class="cd-item"><div class="cd-val" id="r-moon-new-days">--</div><div class="cd-label">to new moon</div></div>
+        </div>
+      </div>
+      <div id="r-mercury-status"></div>
+      <div style="width:40px;height:1px;background:var(--border2);margin:20px auto"></div>
+      <div class="bio-visual" id="r-bio-rings"></div>
+      <div class="today-text" id="r-today" style="margin-top:20px;text-align:left"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Celtic Tree -->
+  <div class="tab-pane" id="tab-celtic">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">&#127795; Celtic Tree Astrology</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">Your birth tree from the Celtic calendar</p>
+      <button class="read-btn" onclick="readAloud('r-celtic',this)">&#128264; Read Aloud</button>
+      <div id="r-celtic"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Mayan -->
+  <div class="tab-pane" id="tab-mayan">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">&#127963; Mayan Tzolkin</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">Your day sign from the sacred Mayan calendar</p>
+      <button class="read-btn" onclick="readAloud('r-mayan',this)">&#128264; Read Aloud</button>
+      <div id="r-mayan"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Human Design -->
+  <div class="tab-pane" id="tab-humandesign">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">&#9878; Human Design</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">Your energetic blueprint for life</p>
+      <button class="read-btn" onclick="readAloud('r-humandesign',this)">&#128264; Read Aloud</button>
+      <div id="r-humandesign"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Aura -->
+  <div class="tab-pane" id="tab-aura">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">&#128302; Aura &amp; Energy</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:20px">Your energy signature revealed</p>
+      <div id="aura-photo-section" style="text-align:center;margin-bottom:24px">
+        <div id="aura-photo-container" style="position:relative;width:220px;height:220px;margin:0 auto;border-radius:50%;overflow:visible">
+          <div id="aura-glow" style="position:absolute;inset:-20px;border-radius:50%;z-index:0;filter:blur(25px);opacity:.7;transition:all 1s ease"></div>
+          <div id="aura-photo-placeholder" style="position:relative;z-index:1;width:220px;height:220px;border-radius:50%;border:2px dashed var(--border2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .3s;background:var(--card)" onclick="document.getElementById('auraPhotoInput').click()">
+            <input type="file" accept="image/*" capture="user" id="auraPhotoInput" style="display:none" onchange="handleAuraPhoto(this)">
+            <div style="font-size:2rem;margin-bottom:6px">&#128247;</div>
+            <div style="font-size:.8rem;color:var(--muted)">Upload a selfie</div>
+            <div style="font-size:.7rem;color:var(--dim);margin-top:4px">See your aura glow</div>
+          </div>
+          <img id="aura-photo-img" style="display:none;position:relative;z-index:1;width:220px;height:220px;border-radius:50%;object-fit:cover;border:3px solid #fff2;cursor:pointer" onclick="document.getElementById('auraPhotoInput').click()">
+        </div>
+        <div id="aura-color-label" style="margin-top:16px;font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600"></div>
+        <div id="aura-color-sub" style="font-size:.85rem;color:var(--muted);margin-top:4px"></div>
+      </div>
+      <button class="read-btn" onclick="readAloud('r-aura',this)">&#128264; Listen</button>
+      <div id="r-aura"></div>
+    </div>
+  </div>
+
+  <!-- TAB: Palm Reading -->
+  <div class="tab-pane" id="tab-palm">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px;text-align:center">
+      <h2 style="margin-bottom:4px" data-i18n="palm_title">Palm Reading</h2>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:20px" data-i18n="palm_subtitle">AI-powered palmistry analysis</p>
+      <div class="palm-upload-zone" id="palmZone" onclick="document.getElementById('palmInput').click()">
+        <input type="file" accept="image/*" capture="environment" id="palmInput" style="display:none" onchange="handlePalmUpload(this)">
+        <div class="puz-icon">&#128247;</div>
+        <div class="puz-text" data-i18n="palm_upload_text">Tap to take photo or upload</div>
+        <div class="puz-hint" data-i18n="palm_upload_hint">Flat hand, good lighting, palm facing camera</div>
+      </div>
+      <div class="palm-preview" id="palmPreview">
+        <img id="palmImg">
+        <div class="palm-change" onclick="document.getElementById('palmInput').click()" data-i18n="palm_change">Change photo</div>
+        <br>
+        <button class="cta" style="max-width:260px;font-size:1.05rem;padding:13px;margin-top:12px" onclick="analyzePalm()" id="palmBtn" data-i18n="palm_cta">Read My Palm</button>
+      </div>
+      <div class="palm-loading" id="palmLoading">
+        <div class="pl-orb"></div>
+        <p style="font-size:.9rem;color:var(--muted)" data-i18n="palm_loading">Reading the lines of your hand...</p>
+      </div>
+      <div class="palm-results" id="palmResults" style="text-align:left">
+        <button class="read-btn" onclick="readAloud('palm-read-content',this)">&#128264; Read Aloud</button>
+        <div id="palm-read-content">
+          <div class="palm-highlights" id="palmHighlights"></div>
+          <div class="palm-reading-text" id="palmReadingText"></div>
+        </div>
+        <div class="palm-detail" id="palmDetail"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Tarot -->
+  <div class="tab-pane" id="tab-tarot">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px;text-align:center">
+      <h2 style="margin-bottom:4px">&#127183; Tarot Card Reading</h2>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:20px">Draw three cards to reveal your past, present, and future</p>
+      <div id="tarotInitial">
+        <button class="tarot-draw-btn" id="tarotDrawBtn" onclick="drawTarot()">Draw Cards</button>
+      </div>
+      <div class="tarot-loading" id="tarotLoading">
+        <div class="tl-orb"></div>
+        <p style="font-size:.9rem;color:var(--muted);font-family:'Cormorant Garamond',serif;font-style:italic">Shuffling the cosmic deck...</p>
+      </div>
+      <div id="tarotResults" style="display:none">
+        <div class="tarot-spread" id="tarotSpread"></div>
+        <div class="tarot-interpretation" id="tarotInterpretation"></div>
+        <button class="tarot-draw-btn" style="margin-top:24px;font-size:1rem;padding:10px 24px" onclick="drawTarot()">Draw Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Compatibility -->
+  <div class="tab-pane" id="tab-compat">
+    <div style="max-width:420px;margin:0 auto;padding:24px 16px;text-align:center">
+      <h2 style="margin-bottom:4px">&#10084;&#65039; Cosmic Compatibility</h2>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:24px">Discover the cosmic chemistry between two souls</p>
+      <div id="compatForm">
+        <div class="form-group">
+          <label>Partner's Name</label>
+          <input type="text" id="compat-name" placeholder="Enter their name" style="width:100%;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:1rem;outline:none">
+        </div>
+        <div class="form-group">
+          <label>Partner's Date of Birth</label>
+          <input type="date" id="compat-birthdate" style="width:100%;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:1rem;outline:none">
+        </div>
+        <button class="cta" id="compatBtn" onclick="checkCompatibility()" style="margin-top:8px">Reveal Our Cosmic Match</button>
+      </div>
+      <div id="compatLoading" style="display:none;padding:40px 0">
+        <div style="width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,var(--rose),var(--accent));animation:orbPulse 2s ease-in-out infinite;margin:0 auto 16px"></div>
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted)">Reading the stars between you...</p>
+      </div>
+      <div id="compatResults" style="display:none">
+        <div style="margin:16px 0 24px">
+          <svg width="160" height="160" viewBox="0 0 160 160" id="compatRingSvg">
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#1e1e3a" stroke-width="8"/>
+            <circle cx="80" cy="80" r="68" fill="none" stroke="var(--rose)" stroke-width="8"
+              id="compatRingPath" stroke-dasharray="0 428" stroke-linecap="round"
+              transform="rotate(-90 80 80)" style="transition:stroke-dasharray 2s ease"/>
+          </svg>
+          <div style="margin-top:-105px;font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--rose)" id="compatScoreNum">0%</div>
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-top:4px">Cosmic Match</div>
+        </div>
+        <div style="text-align:left;margin:20px 0" id="compatBreakdown"></div>
+        <div style="text-align:left;margin:20px 0">
+          <div class="div-section" style="border-left:3px solid var(--rose)">
+            <div class="reading-text" id="compatNarrative" style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.7"></div>
+          </div>
+        </div>
+        <div style="margin:20px 0">
+          <button class="share-btn" onclick="shareMatch()" style="margin:0 auto;display:inline-flex">&#128228; Share Your Match</button>
+        </div>
+        <div style="margin-top:16px;font-size:.82rem;color:var(--dim);cursor:pointer;text-decoration:underline" onclick="resetCompat()">Check another match</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Chat with Aethera -->
+  <div class="tab-pane" id="tab-chat">
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>&#10024; Chat with Aethera</h2>
+        <p style="color:var(--muted);font-size:.82rem">Your personal cosmic oracle</p>
+      </div>
+      <div id="chat-messages" class="chat-messages"></div>
+      <div id="chat-suggestions" class="chat-suggestions"></div>
+      <div class="chat-input-area">
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Ask Aethera anything..."
+                 autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.shiftKey)sendChatMessage()">
+          <button id="chat-send-btn" onclick="sendChatMessage()" aria-label="Send message">&#10148;</button>
+        </div>
+        <div id="chat-typing" class="chat-typing" style="display:none">
+          <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+          <span>Aethera is channeling...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Settings -->
+  <div class="tab-pane" id="tab-settings">
+    <div class="settings-inner">
+      <h2 style="text-align:center;margin-bottom:4px">&#9881;&#65039; Settings</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">Your profile and preferences</p>
+      <!-- Cosmic Profile (birth data for accurate readings) -->
+      <div class="settings-section">
+        <h3>&#10024; Cosmic Profile</h3>
+        <p style="color:var(--dim);font-size:.78rem;margin-bottom:16px">This data powers all your readings. The more you provide, the more accurate your cosmic profile.</p>
+        <div class="settings-row">
+          <label>Full Name</label>
+          <input type="text" id="settings-fullname" placeholder="Your full name" autocomplete="name">
+        </div>
+        <div class="settings-row">
+          <label>Date of Birth</label>
+          <input type="date" id="settings-birthdate">
+        </div>
+        <div class="settings-row">
+          <label>Birth Time <span style="color:var(--dim);font-size:.7rem">(for precise astrology &amp; Human Design)</span></label>
+          <input type="time" id="settings-birthtime">
+        </div>
+        <div class="settings-row">
+          <label>Birth Location <span style="color:var(--dim);font-size:.7rem">(city, country)</span></label>
+          <input type="text" id="settings-location" placeholder="e.g. Los Angeles, USA" autocomplete="address-level2">
+        </div>
+        <div class="settings-row">
+          <label>Focus Area</label>
+          <select id="settings-focus">
+            <option value="purpose">Purpose</option>
+            <option value="love">Love</option>
+            <option value="work">Work</option>
+            <option value="money">Money</option>
+            <option value="health">Health</option>
+          </select>
+        </div>
+        <button class="settings-btn" onclick="saveCosmicProfile()" style="margin-top:16px;background:linear-gradient(135deg,var(--accent),#9b59b6)">Save Cosmic Profile</button>
+        <div class="settings-saved" id="cosmicSavedMsg">Cosmic profile saved! Your next reading will use this data.</div>
+      </div>
+
+      <!-- Display Profile -->
+      <div class="settings-section">
+        <h3>Display Profile</h3>
+        <div class="avatar-upload-zone" onclick="document.getElementById('avatarInput').click()">
+          <div class="avatar-glow"></div>
+          <div class="avatar-circle" id="settingsAvatar">
+            <div class="avatar-letter" id="settingsAvatarLetter">?</div>
+          </div>
+          <div class="avatar-edit-hint">&#128247;</div>
+          <input type="file" accept="image/*" capture="user" id="avatarInput" onchange="handleAvatarUpload(this)">
+        </div>
+        <div class="settings-row">
+          <label>Display Name</label>
+          <input type="text" id="settings-name" placeholder="Display name">
+        </div>
+        <div class="settings-row">
+          <label>Bio</label>
+          <textarea id="settings-bio" rows="2" maxlength="150" placeholder="Short bio (optional)" oninput="updateBioCount()"></textarea>
+        </div>
+        <div class="settings-char-count" id="bioCharCount">0/150</div>
+        <div class="settings-divider"></div>
+        <h3 style="margin-top:12px">Social Links</h3>
+        <div class="settings-row">
+          <label>Instagram</label>
+          <input type="text" id="settings-instagram" placeholder="@username">
+        </div>
+        <div class="settings-row">
+          <label>TikTok</label>
+          <input type="text" id="settings-tiktok" placeholder="@username">
+        </div>
+        <div class="settings-row">
+          <label>Twitter/X</label>
+          <input type="text" id="settings-twitter" placeholder="@username">
+        </div>
+        <button class="settings-btn" onclick="saveUserSettings()" style="margin-top:16px">Save Display Profile</button>
+        <div class="settings-saved" id="settingsSavedMsg">Profile saved!</div>
+      </div>
+      <div class="settings-section">
+        <h3>Voice Settings</h3>
+        <div class="settings-row">
+          <label>Reading voice</label>
+          <select id="voiceSelect" onchange="setVoiceMode(this.value)">
+            <option value="browser">Free</option>
+            <option value="shimmer">Shimmer &#10024;</option>
+            <option value="nova">Nova &#127775;</option>
+            <option value="fable">Fable &#128214;</option>
+            <option value="onyx">Onyx &#128420;</option>
+            <option value="echo">Echo &#127754;</option>
+            <option value="alloy">Alloy &#9889;</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <button class="settings-preview-btn" onclick="previewVoice()">&#9654; Play sample</button>
+          <span style="font-size:.75rem;color:var(--dim)" id="voicePreviewStatus"></span>
+        </div>
+      </div>
+      <div class="settings-section" id="settingsAccountSection">
+        <h3>Account</h3>
+        <div id="settingsAccountContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Share -->
+  <div class="tab-pane" id="tab-share">
+    <div style="max-width:420px;margin:0 auto;padding:40px 16px;text-align:center">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--text);margin-bottom:8px" data-i18n="share_tagline">More awaits...</div>
+      <div style="color:var(--muted);font-size:.9rem;margin-bottom:24px" data-i18n="share_sub">Share your cosmic profile with friends</div>
+      <div id="shareCard" style="width:320px;min-height:520px;margin:0 auto 24px;border-radius:24px;overflow:hidden;background:linear-gradient(165deg,#1a0a40 0%,#0a2838 40%,#0d1a2e 70%,#120828 100%);padding:36px 24px 24px;text-align:center;position:relative;border:1px solid #2a2a5a33">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 25% 15%,#7c5bf518,transparent 50%),radial-gradient(circle at 75% 85%,#00d4aa10,transparent 50%);pointer-events:none"></div>
+        <div style="position:relative;z-index:1">
+          <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:4px;color:#555577;margin-bottom:20px">&#10022; Cosmic Profile &#10022;</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#ffd700;letter-spacing:3px;text-transform:uppercase;margin-bottom:4px" id="share-name"></div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:#ffd700;line-height:1.2;margin-bottom:12px" id="share-archetype"></div>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:#8888aa;margin-bottom:24px;padding:0 8px" id="share-tagline"></div>
+          <div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,#ffd70044,transparent);margin:0 auto 20px"></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px;margin-bottom:24px" id="share-signs"></div>
+          <div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,#ffd70044,transparent);margin:0 auto 16px"></div>
+          <div style="font-size:.6rem;color:#444466;letter-spacing:3px;text-transform:uppercase">aethera.live</div>
+        </div>
+      </div>
+      <div class="share-buttons" style="margin-bottom:16px">
+        <button class="share-btn screenshot-btn" onclick="saveShareCard()" style="font-size:.9rem">&#128248; Save Card</button>
+        <button class="share-btn" onclick="copyShare()" id="copyBtn" data-i18n="share_copy">&#128203; Copy Profile</button>
+        <button class="share-btn" onclick="shareNative()" data-i18n="share_native">&#128228; Share</button>
+      </div>
+      <div style="margin-top:40px;padding:24px 16px;background:var(--card);border:1px solid var(--border);border-radius:16px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--text);margin-bottom:8px">Come back tomorrow for your daily cosmic update</div>
+        <p style="color:var(--muted);font-size:.82rem;line-height:1.6;margin-bottom:16px">Your energy shifts every day — biorhythms, transits, and the Tzolkin cycle will have a new message for you.</p>
+        <button onclick="requestReminder()" id="reminderBtn" style="padding:10px 22px;background:linear-gradient(135deg,#2a1a4a,#1a2a3a);border:1px solid var(--gold-dim);border-radius:12px;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all .3s">&#128276; Remind Me</button>
+      </div>
+      <div class="restart-link" onclick="newReading()" data-i18n="restart" style="margin-top:20px">Get another reading</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- html2canvas for screenshot -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+
+<!-- Firebase SDK (compat) -->
+<!--
+  IMPORTANT: Add aethera.live to Firebase authorized domains:
+  Firebase Console > fredfix > Authentication > Settings > Authorized domains > Add domain > aethera.live
+-->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<!-- Aethera JS modules (load order matters — defer preserves order) -->
+<script src="/v1/aethera/assets/js/config.js" defer></script>
+<script src="/v1/aethera/assets/js/utils.js" defer></script>
+<script src="/v1/aethera/assets/js/stars.js" defer></script>
+<script src="/v1/aethera/assets/js/voice.js" defer></script>
+<script src="/v1/aethera/assets/js/navigation.js" defer></script>
+<script src="/v1/aethera/assets/js/divination-ui.js" defer></script>
+<script src="/v1/aethera/assets/js/reading.js" defer></script>
+<script src="/v1/aethera/assets/js/tarot.js" defer></script>
+<script src="/v1/aethera/assets/js/palm.js" defer></script>
+<script src="/v1/aethera/assets/js/compatibility.js" defer></script>
+<script src="/v1/aethera/assets/js/chat.js" defer></script>
+<script src="/v1/aethera/assets/js/settings.js" defer></script>
+<script src="/v1/aethera/assets/js/auth.js" defer></script>
+</body>
+</html>
