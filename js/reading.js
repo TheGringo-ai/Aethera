@@ -446,12 +446,28 @@ function shareTabReading(tabId, title) {
       </a>
     </div>
     <div style="margin-top:16px;display:flex;gap:8px">
-      <button class="share-action-btn" onclick="copyShareText('${fullText.replace(/'/g, "\\'")} ${url}')">&#128203; Copy Link</button>
-      <button class="share-action-btn" onclick="nativeShare('${title.replace(/'/g, "\\'")}', '${fullText.replace(/'/g, "\\'")}')">&#128228; More...</button>
+      <button class="share-action-btn" onclick="copyShareTextFromPending()">&#128203; Copy Text</button>
+      <button class="share-action-btn" onclick="nativeShareFromPending()">&#128228; More...</button>
     </div>
     <button class="upgrade-later" onclick="closeShareModal()" style="margin-top:12px">Close</button>
   `;
   overlay.classList.add('active');
+}
+
+function copyShareTextFromPending() {
+  const text = (window._pendingShareText || '') + '\nhttps://aethera.live';
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Copied! Paste it anywhere.');
+  }).catch(() => {});
+}
+
+function nativeShareFromPending() {
+  const text = window._pendingShareText || '';
+  if (navigator.share) {
+    navigator.share({title: 'My Aethera Reading', text: text, url: 'https://aethera.live'}).catch(() => {});
+  } else {
+    copyShareTextFromPending();
+  }
 }
 
 function autoCopyShare() {
@@ -463,28 +479,6 @@ function shareToInstagram() {
   alert('Your reading has been copied! Open Instagram, create a post or story, and paste your reading. Add #aethera #cosmicprofile');
 }
 
-function copyShareText(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    alert('Copied! Paste it anywhere.');
-  }).catch(() => {
-    // Fallback for older browsers
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    alert('Copied! Paste it anywhere.');
-  });
-}
-
-function nativeShare(title, text) {
-  if (navigator.share) {
-    navigator.share({title, text, url: 'https://aethera.live'}).catch(() => {});
-  } else {
-    copyShareText(text + ' https://aethera.live');
-  }
-}
 
 function closeShareModal() {
   document.getElementById('shareOverlay').classList.remove('active');
