@@ -671,4 +671,18 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:600}
 .share-reading-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px #7c5bf533}
 .share-reading-btn:active{transform:scale(.96)}
 .share-watermark{text-align:center;padding:16px 0 8px;font-size:.8rem;color:var(--dim);letter-spacing:2px;font-family:'Cormorant Garamond',serif}
+.share-social-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:320px;margin:0 auto}
+.share-social-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:14px;border:none;color:#fff;font-size:.75rem;cursor:pointer;text-decoration:none;transition:transform .2s;font-family:'Inter',sans-serif}
+.share-social-btn:hover{transform:translateY(-2px)}
+.share-social-btn:active{transform:scale(.95)}
+.share-social-btn svg{flex-shrink:0}
+.share-facebook{background:linear-gradient(135deg,#1877f2,#0d5cbf)}
+.share-twitter{background:linear-gradient(135deg,#1a1a2e,#333)}
+.share-instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#f56040)}
+.share-tiktok{background:linear-gradient(135deg,#111,#25f4ee33)}
+.share-snapchat{background:linear-gradient(135deg,#fffc00,#f7d800);color:#000}
+.share-snapchat svg path{fill:#000}
+.share-whatsapp{background:linear-gradient(135deg,#25d366,#128c7e)}
+.share-action-btn{flex:1;padding:10px 16px;background:var(--card);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-size:.85rem;cursor:pointer;transition:border-color .2s}
+.share-action-btn:hover{border-color:var(--gold)}
 

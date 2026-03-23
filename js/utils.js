@@ -286,7 +286,12 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     if (document.getElementById('upgradeOverlay').classList.contains('active')) closeUpgradeModal();
     if (document.getElementById('authOverlay').classList.contains('active')) closeAuthModal();
+    const shareOv = document.getElementById('shareOverlay');
+    if (shareOv && shareOv.classList.contains('active')) shareOv.classList.remove('active');
   }
+});
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.id === 'shareOverlay') e.target.classList.remove('active');
 });
 
 /* ════════════════════════════════════════════════════════════════
