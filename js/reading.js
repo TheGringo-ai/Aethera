@@ -251,6 +251,15 @@ function renderTodayTab(bio, d, div) {
       </div>`;
     }
   }
+
+  // Add share button to Today tab
+  const todayTab = document.getElementById('tab-today');
+  if (todayTab && !todayTab.querySelector('.share-reading-bar')) {
+    const shareBar = document.createElement('div');
+    shareBar.className = 'share-reading-bar';
+    shareBar.innerHTML = '<button class="share-reading-btn" onclick="shareTabReading(\'tab-today\', \'My Daily Cosmic Energy\')">&#128228; Share This Reading</button>';
+    todayTab.querySelector('div').appendChild(shareBar);
+  }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -272,6 +281,15 @@ function renderReadingTab(d) {
   }
   const readingParas = readingText.split('\n').filter(p => p.trim().length > 10).map(p => `<p>${p}</p>`).join('');
   document.getElementById('r-reading').innerHTML = readingParas || '<p>Your cosmic reading is being woven...</p>';
+
+  // Add share button to Reading tab
+  const readingTab = document.getElementById('tab-reading');
+  if (readingTab && !readingTab.querySelector('.share-reading-bar')) {
+    const shareBar = document.createElement('div');
+    shareBar.className = 'share-reading-bar';
+    shareBar.innerHTML = '<button class="share-reading-btn" onclick="shareTabReading(\'tab-reading\', \'My Cosmic Reading\')">&#128228; Share This Reading</button>';
+    readingTab.querySelector('div').appendChild(shareBar);
+  }
 }
 
 /* ════════════════════════════════════════════════════════════════

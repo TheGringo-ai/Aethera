@@ -81,7 +81,10 @@ function renderNumerologyTab(num) {
         <h4 style="color:var(--gold);font-size:.95rem;margin:14px 0 6px">Interpreting Your Numbers</h4>
         <p>Each number carries a vibration: 1 = leadership, 2 = cooperation, 3 = creativity, 4 = stability, 5 = freedom, 6 = nurturing, 7 = introspection, 8 = power, 9 = humanitarianism. Master numbers (11, 22, 33) carry amplified energy and greater potential — along with greater challenges. Click "How is this calculated?" on each number above to see your exact calculation breakdown.</p>
       </div>
-    </details>`;
+    </details>
+    <div class="share-reading-bar">
+      <button class="share-reading-btn" onclick="shareTabReading('tab-numerology', 'My Numerology Reading')">&#128228; Share This Reading</button>
+    </div>`;
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -219,6 +222,9 @@ function renderAstrologyTab(astro) {
         <p>Your ruling planet <strong style="color:var(--text)">${astro.ruling_planet || 'the cosmos'}</strong> colors how your sign's energy expresses itself. The ancient astrologers assigned each sign a planetary ruler based on observed correlations between planetary cycles and human behavior. Your element reveals your instinctive reaction style, while your modality shows your approach to life's challenges. Together, they form your astrological DNA.</p>
       </div>
     </details>
+    <div class="share-reading-bar">
+      <button class="share-reading-btn" onclick="shareTabReading('tab-astrology', 'My Astrology Reading')">&#128228; Share This Reading</button>
+    </div>
   `;
 }
 
@@ -267,6 +273,9 @@ function renderChineseTab(cn) {
         <p>The <strong style="color:var(--text)">${cn.element} ${cn.animal}</strong> is a unique combination that blends the ${cn.animal}'s core personality with the ${cn.element} element's qualities. ${cn.element === 'Water' ? 'Water brings adaptability and emotional depth.' : cn.element === 'Wood' ? 'Wood brings growth, creativity, and expansion.' : cn.element === 'Fire' ? 'Fire brings passion, charisma, and dynamism.' : cn.element === 'Metal' ? 'Metal brings determination, structure, and precision.' : 'Earth brings stability, reliability, and groundedness.'} Your lucky numbers and colors are traditionally associated with your specific animal-element pairing.</p>
       </div>
     </details>
+    <div class="share-reading-bar">
+      <button class="share-reading-btn" onclick="shareTabReading('tab-chinese', 'My Chinese Zodiac Reading')">&#128228; Share This Reading</button>
+    </div>
   `;
 }
 
@@ -307,6 +316,9 @@ function renderCelticTab(celtic) {
         <p>Your Celtic tree sign reveals qualities the Druids considered your birthright — innate gifts encoded in the season of your birth. The tree's character reflects your deepest nature: its roots represent your hidden depths, its trunk your core strength, and its branches the ways you reach toward the world.</p>
       </div>
     </details>
+    <div class="share-reading-bar">
+      <button class="share-reading-btn" onclick="shareTabReading('tab-celtic', 'My Celtic Tree Reading')">&#128228; Share This Reading</button>
+    </div>
   `;
 }
 
@@ -342,6 +354,9 @@ function renderMayanTab(mayan) {
         <p>The day sign reveals your soul's purpose and innate gifts. The trecena number amplifies certain aspects — lower numbers carry initiatory energy, while higher numbers carry mastery energy. The element <strong style="color:var(--text)">${mayan.element || 'assigned to your sign'}</strong> connects your Mayan profile to natural forces the Maya associated with specific directions and seasons.</p>
       </div>
     </details>
+    <div class="share-reading-bar">
+      <button class="share-reading-btn" onclick="shareTabReading('tab-mayan', 'My Mayan Tzolkin Reading')">&#128228; Share This Reading</button>
+    </div>
   `;
 }
 
@@ -415,6 +430,9 @@ function renderHumanDesignTab(hd) {
         <p style="margin-top:8px">The 64 gates correspond to the 64 hexagrams of the I Ching, each carrying a specific theme and life lesson. When two gates connect across centers in your chart, they form a channel — a consistent life force that defines your <strong style="color:var(--text)">Definition</strong>.</p>
       </div>
     </details>
+    <div class="share-reading-bar">
+      <button class="share-reading-btn" onclick="shareTabReading('tab-humandesign', 'My Human Design Reading')">&#128228; Share This Reading</button>
+    </div>
   `;
 }
 
@@ -449,6 +467,9 @@ function renderAuraTab(d, div) {
         <p>Each aura color operates on a specific frequency. Warm colors (red, orange, gold) indicate active, physical, and grounded energy. Cool colors (blue, indigo, violet) suggest intuitive, spiritual, and intellectual energy. Green represents healing and balance, while crystal/white auras indicate high sensitivity and amplification of surrounding energies. Upload a selfie above to see your aura visualized.</p>
       </div>
     </details>
+    <div class="share-reading-bar">
+      <button class="share-reading-btn" onclick="shareTabReading('tab-aura', 'My Aura Reading')">&#128228; Share This Reading</button>
+    </div>
   `;
 }
 
