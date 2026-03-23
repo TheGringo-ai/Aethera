@@ -1311,16 +1311,37 @@ async def chat(req: ChatRequest, request: Request, user: dict = Depends(require_
 
 @router.get("/og-image")
 async def og_image():
-    """Return the hero image for Open Graph social media previews."""
-    from fastapi.responses import FileResponse
-    from pathlib import Path
-    hero = Path(__file__).parent / "aethera-hero.jpg"
-    if hero.exists():
-        return FileResponse(hero, media_type="image/jpeg")
-    # Fallback SVG if image missing
+    """Return a rich 1200x630 social preview card for Open Graph."""
     from fastapi.responses import Response
-    svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#1a1040"/><text x="600" y="300" text-anchor="middle" font-family="Georgia" font-size="80" fill="#ffd700">Aethera</text><text x="600" y="370" text-anchor="middle" font-family="Georgia" font-size="28" fill="#8888aa">Discover Your Cosmic Identity</text></svg>'
-    return Response(content=svg, media_type="image/svg+xml")
+    svg = '''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a1a"/>
+      <stop offset="50%" stop-color="#1a0a40"/>
+      <stop offset="100%" stop-color="#0d1a2e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c5bf5"/>
+      <stop offset="50%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#00d4aa"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="30%" cy="20%"><stop offset="0%" stop-color="#7c5bf522"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+    <radialGradient id="glow2" cx="70%" cy="80%"><stop offset="0%" stop-color="#00d4aa15"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+  <text x="600" y="200" text-anchor="middle" font-family="Georgia,serif" font-size="96" font-weight="700" fill="url(#gold)" letter-spacing="8">&#10024; Aethera</text>
+  <text x="600" y="270" text-anchor="middle" font-family="Georgia,serif" font-size="32" fill="#c8c0e0" font-style="italic">Your Cosmic Identity, Revealed</text>
+  <line x1="500" y1="310" x2="700" y2="310" stroke="#ffd70044" stroke-width="1"/>
+  <text x="600" y="370" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" fill="#8888aa">Numerology &#183; Astrology &#183; Human Design &#183; Tarot &#183; Palm Reading</text>
+  <text x="600" y="410" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" fill="#8888aa">Chinese Zodiac &#183; Celtic Tree &#183; Mayan Calendar &#183; Aura</text>
+  <rect x="420" y="460" width="360" height="56" rx="28" fill="#7c5bf5"/>
+  <text x="600" y="496" text-anchor="middle" font-family="Georgia,serif" font-size="24" fill="#ffffff" font-weight="600">Discover Yours Free</text>
+  <text x="600" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" fill="#555577" letter-spacing="4">aethera.live</text>
+</svg>'''
+    return Response(content=svg, media_type="image/svg+xml",
+                    headers={"Cache-Control": "public, max-age=86400"})
 
 
 @router.get("/assets/{subdir}/{filename}")
