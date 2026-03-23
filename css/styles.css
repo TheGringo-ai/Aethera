@@ -685,4 +685,5 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:600}
 .share-whatsapp{background:linear-gradient(135deg,#25d366,#128c7e)}
 .share-action-btn{flex:1;padding:10px 16px;background:var(--card);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-size:.85rem;cursor:pointer;transition:border-color .2s}
 .share-action-btn:hover{border-color:var(--gold)}
+.share-preview{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;font-size:.82rem;color:var(--text);line-height:1.6;text-align:left;max-height:140px;overflow-y:auto}
 
