@@ -185,47 +185,59 @@ function populateWelcomeScreen() {
 }
 
 function getReturnReading() {
-  // Check ALL sources for profile data: Firestore, localStorage, both
+  // Gather profile data from ALL sources
   const fsProfile = userProfile || {};
   const localProfile = getProfile() || {};
   const name = fsProfile.name || localProfile.name || currentUser?.displayName || '';
   const birthdate = fsProfile.birthdate || localProfile.birthdate || '';
 
-  if (!name || !birthdate) {
-    // Missing critical data — show simplified form for signed-in users
-    hideAllScreens();
-    document.getElementById('landing-screen').style.display = 'none';
-    document.getElementById('intro-screen').style.display = 'flex';
-    // Hide personality questions + email for returning users — just need name + DOB
-    if (currentUser) {
-      document.querySelectorAll('.full-profile-only').forEach(el => el.style.display = 'none');
-      document.getElementById('submitBtn').textContent = 'Get My Reading';
-    } else {
-      document.querySelectorAll('.full-profile-only').forEach(el => el.style.display = '');
-      document.getElementById('submitBtn').textContent = 'Reveal My Cosmic Profile';
-    }
-    // Pre-fill what we have
-    document.getElementById('inp-name').value = name || '';
-    document.getElementById('inp-email').value = currentUser?.email || '';
-    if (birthdate) document.getElementById('inp-birthdate').value = birthdate;
-    // Pre-fill birth time + location if available
-    const bt = fsProfile.birth_time || localProfile.birth_time || '';
-    const loc = fsProfile.location || localProfile.location || '';
-    if (bt) document.getElementById('inp-birth-time').value = bt;
-    if (loc) document.getElementById('inp-location').value = loc;
-    // Pre-select focus area if saved
-    const fa = fsProfile.focus_area || localProfile.focus_area || '';
-    if (fa) {
-      focusArea = fa;
-      document.querySelectorAll('.focus-btn').forEach(b => b.classList.remove('selected'));
-      const fb = document.querySelector('.focus-btn[data-focus="' + fa + '"]');
-      if (fb) fb.classList.add('selected');
-    }
-    freeTrialMode = !!currentUser; // simplified mode for signed-in users
-    checkReady();
+  if (name && birthdate) {
+    // Profile is complete — merge and go straight to reading
+    _mergeProfileData(fsProfile, localProfile, name, birthdate);
+    getReading(true);
     return;
   }
 
+  // Missing data — but first, save whatever we DO have to Firestore
+  // so it's not lost (fixes the empty-Firestore-profile bug)
+  if (currentUser && (name || birthdate)) {
+    const updates = {};
+    if (name && !fsProfile.name) updates.name = name;
+    if (birthdate && !fsProfile.birthdate) updates.birthdate = birthdate;
+    if (Object.keys(updates).length) {
+      fbDb.collection('aethera_users').doc(currentUser.uid).update(updates).catch(() => {});
+      if (userProfile) Object.assign(userProfile, updates);
+    }
+  }
+
+  // Show simplified form
+  hideAllScreens();
+  document.getElementById('landing-screen').style.display = 'none';
+  document.getElementById('intro-screen').style.display = 'flex';
+  if (currentUser) {
+    document.querySelectorAll('.full-profile-only').forEach(el => el.style.display = 'none');
+    document.getElementById('submitBtn').textContent = 'Get My Reading';
+  }
+  document.getElementById('inp-name').value = name || '';
+  document.getElementById('inp-email').value = currentUser?.email || '';
+  if (birthdate) document.getElementById('inp-birthdate').value = birthdate;
+  const bt = fsProfile.birth_time || localProfile.birth_time || '';
+  const loc = fsProfile.location || localProfile.location || '';
+  if (bt) document.getElementById('inp-birth-time').value = bt;
+  if (loc) document.getElementById('inp-location').value = loc;
+  const fa = fsProfile.focus_area || localProfile.focus_area || '';
+  if (fa) {
+    focusArea = fa;
+    document.querySelectorAll('.focus-btn').forEach(b => b.classList.remove('selected'));
+    const fb = document.querySelector('.focus-btn[data-focus="' + fa + '"]');
+    if (fb) fb.classList.add('selected');
+  }
+  freeTrialMode = !!currentUser;
+  checkReady();
+  return;
+}
+
+function _mergeProfileData(fsProfile, localProfile, name, birthdate) {
   // Merge best data into userProfile so getReading(true) uses it
   if (userProfile) {
     if (!userProfile.name) userProfile.name = name;
@@ -236,10 +248,17 @@ function getReturnReading() {
     if (!userProfile.personality_answers || userProfile.personality_answers.every(a => a === 0)) {
       userProfile.personality_answers = localProfile.personality_answers || [0,0,0,0,0];
     }
+    // Sync missing fields to Firestore so they persist
+    if (currentUser) {
+      fbDb.collection('aethera_users').doc(currentUser.uid).update({
+        name: userProfile.name,
+        birthdate: userProfile.birthdate,
+        birth_time: userProfile.birth_time || null,
+        location: userProfile.location || null,
+        focus_area: userProfile.focus_area || 'purpose',
+      }).catch(() => {});
+    }
   }
-
-  // Profile is complete — go straight to reading
-  getReading(true);
 }
 
 function showLastReading() {
