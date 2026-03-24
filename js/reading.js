@@ -403,7 +403,28 @@ function shareTabReading(tabId, title) {
 
   const shareText = lines.join('\n');
   const oneLiner = lines.slice(0, 3).join(' | ');
-  const url = 'https://aethera.live';
+
+  // Build personalized share URL with OG tags
+  let url = 'https://aethera.live';
+  if (d) {
+    const astro = d.divination?.western_astrology;
+    const hd = d.divination?.human_design;
+    const num = d.divination?.numerology;
+    const shareData = {
+      n: (d.name || '').split(' ')[0],
+      a: d.cosmic_archetype || '',
+      s: astro?.sign ? (astro.symbol + ' ' + astro.sign) : '',
+      m: astro?.moon_sign || '',
+      r: astro?.rising_sign || '',
+      h: hd?.type || '',
+      l: num?.life_path?.number || '',
+      au: d.aura_color || '',
+    };
+    try {
+      const shareId = btoa(JSON.stringify(shareData)).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
+      url = 'https://aethera.live/v1/aethera/share/' + shareId;
+    } catch(e) {}
+  }
   const encodedText = encodeURIComponent(shareText);
   const encodedOneLiner = encodeURIComponent(oneLiner);
   const encodedUrl = encodeURIComponent(url);

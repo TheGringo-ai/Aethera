@@ -1375,6 +1375,112 @@ async def serve_asset_subdir(subdir: str, filename: str):
     return FileResponse(asset_path, media_type=ct)
 
 
+@router.get("/share/{share_id}")
+async def share_page(share_id: str):
+    """Serve a personalized share page with custom OG tags for social media previews."""
+    from fastapi.responses import HTMLResponse
+    import urllib.parse
+
+    # Decode the share data from the ID (base64-encoded JSON)
+    try:
+        import base64, json
+        data = json.loads(base64.urlsafe_b64decode(share_id + '==').decode())
+        name = data.get('n', 'Someone')
+        archetype = data.get('a', 'Cosmic Traveler')
+        sign = data.get('s', '')
+        moon = data.get('m', '')
+        hd_type = data.get('h', '')
+        lp = data.get('l', '')
+    except Exception:
+        name = 'Someone'
+        archetype = 'Cosmic Traveler'
+        sign = moon = hd_type = lp = ''
+
+    desc_parts = []
+    if sign: desc_parts.append(sign)
+    if moon: desc_parts.append(moon + ' Moon')
+    if hd_type: desc_parts.append(hd_type)
+    if lp: desc_parts.append('Life Path ' + str(lp))
+    description = ' | '.join(desc_parts) if desc_parts else 'Discover your cosmic identity'
+
+    og_image_url = f"https://aethera.live/v1/aethera/share-image/{share_id}"
+    share_url = f"https://aethera.live/v1/aethera/share/{share_id}"
+
+    html = f"""<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta property="og:title" content="{name}'s Cosmic Profile — {archetype}">
+<meta property="og:description" content="{description}. What do the stars say about you? Find out free at aethera.live">
+<meta property="og:image" content="{og_image_url}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="{share_url}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Aethera">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{name}'s Cosmic Profile — {archetype}">
+<meta name="twitter:description" content="{description}">
+<meta name="twitter:image" content="{og_image_url}">
+<title>{name}'s Cosmic Profile — Aethera</title>
+<meta http-equiv="refresh" content="0;url=https://aethera.live">
+</head><body style="background:#0a0a1a;color:#fff;font-family:Georgia,serif;text-align:center;padding:60px 20px">
+<h1 style="color:#ffd700">{name}'s Cosmic Profile</h1>
+<h2 style="color:#8888aa;font-style:italic">{archetype}</h2>
+<p style="color:#aaa;margin:20px 0">{description}</p>
+<p><a href="https://aethera.live" style="color:#7c5bf5;font-size:1.2rem">Discover YOUR cosmic identity free →</a></p>
+</body></html>"""
+    return HTMLResponse(html)
+
+
+@router.get("/share-image/{share_id}")
+async def share_image(share_id: str):
+    """Generate a personalized 1200x630 OG image for social sharing."""
+    from fastapi.responses import Response
+
+    try:
+        import base64, json
+        data = json.loads(base64.urlsafe_b64decode(share_id + '==').decode())
+        name = data.get('n', 'Someone')
+        archetype = data.get('a', 'Cosmic Traveler')
+        sign = data.get('s', '')
+        moon = data.get('m', '')
+        rising = data.get('r', '')
+        hd_type = data.get('h', '')
+        lp = data.get('l', '')
+        aura = data.get('au', '')
+    except Exception:
+        name = 'Someone'
+        archetype = 'Cosmic Traveler'
+        sign = moon = rising = hd_type = lp = aura = ''
+
+    # Build info lines
+    line1 = ' · '.join(filter(None, [sign, (moon + ' Moon') if moon else '', (rising + ' Rising') if rising else '']))
+    line2 = ' · '.join(filter(None, [hd_type, ('Life Path ' + str(lp)) if lp else '', ('Aura: ' + aura) if aura else '']))
+
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a1a"/><stop offset="50%" stop-color="#1a0a40"/><stop offset="100%" stop-color="#0d1a2e"/>
+    </linearGradient>
+    <linearGradient id="gd" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c5bf5"/><stop offset="50%" stop-color="#ffd700"/><stop offset="100%" stop-color="#00d4aa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="600" y="100" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" fill="#555577" letter-spacing="6">COSMIC PROFILE</text>
+  <text x="600" y="175" text-anchor="middle" font-family="Georgia,serif" font-size="52" fill="#ffd700" font-weight="700">{name}</text>
+  <text x="600" y="240" text-anchor="middle" font-family="Georgia,serif" font-size="36" fill="url(#gd)" font-style="italic">{archetype}</text>
+  <line x1="450" y1="275" x2="750" y2="275" stroke="#ffd70033" stroke-width="1"/>
+  <text x="600" y="330" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" fill="#c8c0e0">{line1}</text>
+  <text x="600" y="375" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" fill="#8888aa">{line2}</text>
+  <rect x="400" y="430" width="400" height="56" rx="28" fill="#7c5bf5"/>
+  <text x="600" y="466" text-anchor="middle" font-family="Georgia,serif" font-size="22" fill="#fff" font-weight="600">Discover Yours Free</text>
+  <text x="600" y="570" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" fill="#555577" letter-spacing="4">aethera.live</text>
+</svg>'''
+    return Response(content=svg, media_type="image/svg+xml",
+                    headers={"Cache-Control": "public, max-age=86400"})
+
+
 @router.get("/assets/{filename}")
 async def serve_asset(filename: str):
     """Serve static assets (images, etc.)."""
