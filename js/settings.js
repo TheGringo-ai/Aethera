@@ -11,14 +11,27 @@ function loadCosmicProfile() {
   const nameEl = document.getElementById('settings-fullname');
   const bdEl = document.getElementById('settings-birthdate');
   const btEl = document.getElementById('settings-birthtime');
-  const locEl = document.getElementById('settings-location');
+  const countryEl = document.getElementById('settings-country');
+  const stateEl = document.getElementById('settings-state');
+  const cityEl = document.getElementById('settings-city');
   const focusEl = document.getElementById('settings-focus');
 
   if (nameEl) nameEl.value = profile.name || currentUser?.displayName || '';
   if (bdEl) bdEl.value = profile.birthdate || '';
   if (btEl) btEl.value = profile.birth_time || '';
-  if (locEl) locEl.value = profile.location || '';
   if (focusEl) focusEl.value = profile.focus_area || 'purpose';
+
+  // Load location fields (split or legacy single field)
+  if (countryEl) countryEl.value = profile.birth_country || '';
+  if (stateEl) stateEl.value = profile.birth_state || '';
+  if (cityEl) cityEl.value = profile.birth_city || '';
+  // Fallback: if old single 'location' field exists, try to parse it
+  if (profile.location && !profile.birth_city) {
+    const parts = profile.location.split(',').map(s => s.trim());
+    if (parts.length >= 2 && cityEl) cityEl.value = parts[0];
+    if (parts.length >= 2 && countryEl) countryEl.value = parts[parts.length - 1];
+    if (parts.length >= 3 && stateEl) stateEl.value = parts[1];
+  }
 
   // Load social links
   const igEl = document.getElementById('settings-instagram');
@@ -35,7 +48,9 @@ function saveCosmicProfile() {
   const name = (document.getElementById('settings-fullname').value || '').trim();
   const birthdate = document.getElementById('settings-birthdate').value;
   const birth_time = document.getElementById('settings-birthtime').value || null;
-  const location = (document.getElementById('settings-location').value || '').trim() || null;
+  const birth_country = (document.getElementById('settings-country').value || '').trim();
+  const birth_state = (document.getElementById('settings-state').value || '').trim();
+  const birth_city = (document.getElementById('settings-city').value || '').trim();
   const focus_area = document.getElementById('settings-focus').value || 'purpose';
   const instagram = (document.getElementById('settings-instagram').value || '').trim();
   const tiktok = (document.getElementById('settings-tiktok').value || '').trim();
@@ -47,6 +62,10 @@ function saveCosmicProfile() {
     return;
   }
 
+  // Build combined location string for the reading API (city, state, country)
+  const locationParts = [birth_city, birth_state, birth_country].filter(Boolean);
+  const location = locationParts.join(', ') || null;
+
   // Save to localStorage profile
   const existing = getProfile() || {};
   const profile = {
@@ -55,6 +74,9 @@ function saveCosmicProfile() {
     birthdate,
     birth_time,
     location,
+    birth_country,
+    birth_state,
+    birth_city,
     focus_area,
   };
   try { localStorage.setItem('aethera_profile', JSON.stringify(profile)); } catch(e) {}
@@ -66,6 +88,9 @@ function saveCosmicProfile() {
       birthdate,
       birth_time: birth_time || null,
       location: location || null,
+      birth_country: birth_country || null,
+      birth_state: birth_state || null,
+      birth_city: birth_city || null,
       focus_area,
       settings_social_instagram: instagram,
       settings_social_tiktok: tiktok,
@@ -79,6 +104,9 @@ function saveCosmicProfile() {
       userProfile.birthdate = birthdate;
       userProfile.birth_time = birth_time;
       userProfile.location = location;
+      userProfile.birth_country = birth_country;
+      userProfile.birth_state = birth_state;
+      userProfile.birth_city = birth_city;
       userProfile.focus_area = focus_area;
     }
   }
