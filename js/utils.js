@@ -379,26 +379,17 @@ function checkProfileCompletion() {
   if (!currentUser || profileBannerDismissed) return;
   const profile = userProfile || getProfile() || {};
 
-  const missing = [];
-  if (!profile.birth_time) missing.push('birth time');
-  if (!profile.location) missing.push('birth location');
-  if (!profile.birthdate) missing.push('date of birth');
-  if (!profile.name) missing.push('name');
+  // Only show the banner if essential reading fields are missing (name + birthdate)
+  // Birth time and location are optional enhancements — don't nag the user about them
+  const hasName = !!profile.name;
+  const hasBirthdate = !!profile.birthdate;
 
   const banner = document.getElementById('profileBanner');
   if (!banner) return;
 
-  if (missing.length > 0) {
+  if (!hasName || !hasBirthdate) {
     const sub = document.getElementById('profileBannerSub');
-    if (missing.includes('date of birth') || missing.includes('name')) {
-      sub.textContent = 'Add your birth details for personalized readings';
-    } else if (missing.includes('birth time') && missing.includes('birth location')) {
-      sub.textContent = 'Add birth time & location for accurate Human Design & Rising sign';
-    } else if (missing.includes('birth time')) {
-      sub.textContent = 'Add your birth time for precise Human Design & Ascendant';
-    } else {
-      sub.textContent = 'Add birth location for accurate Rising sign & transits';
-    }
+    sub.textContent = 'Add your birth details for personalized readings';
     banner.style.display = 'flex';
   } else {
     banner.style.display = 'none';
