@@ -706,3 +706,15 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:600}
 .share-action-btn:hover{border-color:var(--gold)}
 .share-preview{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;font-size:.82rem;color:var(--text);line-height:1.6;text-align:left;max-height:140px;overflow-y:auto}
 
+/* ── Beta Banner ── */
+.beta-banner{text-align:center;padding:8px 16px;background:linear-gradient(90deg,#1a0a4033,#0d1a2e33);border-bottom:1px solid var(--border);font-size:.75rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.beta-banner a{color:var(--gold);text-decoration:underline}
+
+/* ── Legal Text ── */
+.legal-text{font-size:.85rem;line-height:1.7;color:var(--muted)}
+.legal-text h3{color:var(--text);font-size:1rem;margin:20px 0 8px;font-family:'Cormorant Garamond',serif}
+.legal-text p{margin-bottom:10px}
+.legal-text ul{margin:8px 0 12px 20px}
+.legal-text li{margin-bottom:6px}
+.legal-text a{color:var(--accent)}
+

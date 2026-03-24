@@ -237,7 +237,7 @@ function showUpgradeModal() {
       <div style="font-size:2.5rem;margin-bottom:12px">&#10024;</div>
       <h2 style="font-size:1.6rem;margin-bottom:16px">Create a Free Account</h2>
       <p style="color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:20px;text-align:left">
-        Sign up to unlock <strong style="color:var(--gold)">all features free for 30 days</strong> — no credit card needed:
+        Sign up to unlock <strong style="color:var(--gold)">all features completely free</strong> during the beta — no credit card needed:
       </p>
       <ul class="upgrade-features" style="margin-bottom:24px">
         <li>&#9889; <strong>3 readings per day</strong></li>
@@ -250,34 +250,26 @@ function showUpgradeModal() {
       <button class="upgrade-btn" onclick="closeUpgradeModal();showAuthModal('signup')" style="background:linear-gradient(135deg,var(--accent),#9b59b6);margin-bottom:12px">
         Create Free Account
       </button>
-      <div style="font-size:.75rem;color:var(--dim);margin-bottom:12px">Free for 30 days &bull; No credit card &bull; Cancel anytime</div>
+      <div style="font-size:.75rem;color:var(--dim);margin-bottom:12px">Free during beta &bull; No credit card &bull; All features included</div>
       <button class="upgrade-later" onclick="closeUpgradeModal();showAuthModal('signin')">Already have an account? Sign in</button>
     `;
   } else if (trialExpired) {
     modal.innerHTML = `
-      <div style="font-size:2rem;margin-bottom:8px">&#11088;</div>
-      <div style="font-size:.85rem;color:var(--muted);margin-bottom:12px">Your free trial has ended</div>
-      <h2>Upgrade to Aethera Premium</h2>
-      <div class="upgrade-price">$4.99/month</div>
-      <ul class="upgrade-features">
-        <li>Unlimited readings every day</li>
-        <li>Premium AI voices (Shimmer, Nova, Fable...)</li>
-        <li>Compatibility checker</li>
-        <li>Tarot card readings</li>
-        <li>Palm reading analysis</li>
-        <li>Aura photo generation</li>
-        <li>Human Design blueprint</li>
-      </ul>
-      <button class="upgrade-btn" onclick="closeUpgradeModal()" style="opacity:.5;cursor:default">Coming Soon</button>
-      <button class="upgrade-later" onclick="closeUpgradeModal()">Stay on free plan</button>
-      <div style="font-size:.75rem;color:var(--dim);margin-top:8px">Free plan: 1 basic reading per day</div>
+      <div style="font-size:2rem;margin-bottom:8px">&#128640;</div>
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:12px">Aethera Beta</div>
+      <h2 style="font-size:1.4rem">Free During Beta</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin:16px 0;line-height:1.6">Aethera is currently in beta. All features are <strong style="color:var(--gold)">completely free</strong> while we refine the experience.</p>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:20px">Found a bug or have a suggestion?</p>
+      <a href="mailto:fred@aethera.live" style="color:var(--accent);text-decoration:underline;font-size:.9rem">fred@aethera.live</a>
+      <button class="upgrade-later" onclick="closeUpgradeModal()" style="margin-top:16px">OK</button>
     `;
   } else {
     modal.innerHTML = `
-      <div style="font-size:2rem;margin-bottom:8px">&#10024;</div>
-      <div style="font-size:.85rem;color:var(--muted);margin-bottom:12px">You've used your readings for today</div>
-      <h2 style="font-size:1.4rem">Come back tomorrow</h2>
-      <p style="color:var(--muted);font-size:.9rem;margin:16px 0">Your cosmic energy shifts daily — tomorrow's reading will reveal new insights.</p>
+      <div style="font-size:2rem;margin-bottom:8px">&#128640;</div>
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:12px">Aethera Beta</div>
+      <h2 style="font-size:1.4rem">Daily Limit Reached</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin:16px 0;line-height:1.6">You've used your readings for today. Your cosmic energy shifts daily — come back tomorrow for new insights.</p>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:20px">All features remain <strong style="color:var(--gold)">free during beta</strong>.</p>
       <button class="upgrade-later" onclick="closeUpgradeModal()" style="margin-top:8px">OK</button>
     `;
   }
@@ -345,11 +337,11 @@ function gateTab(tabId, feature, title, description) {
       tab.dataset.gatedOriginal = tab.innerHTML;
     }
     const isSignedIn = !!currentUser;
-    const ctaText = isSignedIn ? 'Upgrade to Premium' : 'Sign Up Free — 30 Days Unlimited';
+    const ctaText = isSignedIn ? 'Free During Beta' : 'Sign Up Free — All Features Unlocked';
     const ctaAction = isSignedIn ? 'showUpgradeModal()' : "showAuthModal('signup')";
     const subText = isSignedIn
-      ? '<p style="color:var(--gold);font-size:.85rem;margin-bottom:16px">Available with Aethera Premium — $4.99/month</p>'
-      : '<p style="color:var(--accent2);font-size:.85rem;margin-bottom:16px">Create a free account to unlock this for 30 days</p>';
+      ? '<p style="color:var(--gold);font-size:.85rem;margin-bottom:16px">All features are free during the Aethera beta</p>'
+      : '<p style="color:var(--accent2);font-size:.85rem;margin-bottom:16px">Create a free account to unlock all features</p>';
     tab.innerHTML = `
       <div class="premium-gate">
         <div style="font-size:2.5rem;margin-bottom:12px">&#128274;</div>

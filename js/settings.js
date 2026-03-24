@@ -254,7 +254,7 @@ function populateAccountSection() {
         <div>Member since: <strong>${createdDate}</strong></div>
         <div>Plan: <strong>${planText}</strong></div>
       </div>
-      ${tier.tier === 'free' || (tier.tier === 'trial' && tier.daysLeft <= 7) ? '<button class="settings-btn" style="margin-top:16px;background:linear-gradient(135deg,var(--gold),#e6a800);color:#000" onclick="showUpgradeModal()">Upgrade to Premium</button>' : ''}
+      <div style="margin-top:12px;font-size:.8rem;color:var(--accent2)">All features free during beta</div>
       <button class="settings-btn-danger" style="margin-top:12px" onclick="signOut()">Sign Out</button>
     `;
   } else {

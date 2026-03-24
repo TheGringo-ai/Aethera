@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Aethera — Your Cosmic Identity, Revealed</title>
-<meta name="description" content="9 divination systems powered by AI — numerology, astrology, Human Design, tarot, palm reading, and more. Full natal chart with Moon sign, Rising sign, and real-time transits. Free for 30 days.">
+<meta name="description" content="9 divination systems powered by AI — numerology, astrology, Human Design, tarot, palm reading, and more. Full natal chart with Moon sign, Rising sign, and real-time transits. Free during beta.">
 <meta name="theme-color" content="#0a0a1a">
 <meta name="keywords" content="astrology, numerology, human design, tarot, palm reading, cosmic profile, natal chart, moon sign, rising sign, chinese zodiac, celtic tree, mayan calendar, aura reading, AI oracle">
 <link rel="canonical" href="https://aethera.live">
 <!-- Open Graph -->
 <meta property="og:title" content="Aethera — What Do the Stars Say About You?">
-<meta property="og:description" content="9 ancient divination systems. Full natal chart. Accurate Human Design. AI-powered cosmic readings personalized to your exact birth data. Free for 30 days.">
+<meta property="og:description" content="9 ancient divination systems. Full natal chart. Accurate Human Design. AI-powered cosmic readings personalized to your exact birth data. Free during beta.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aethera.live">
 <meta property="og:image" content="https://aethera.live/v1/aethera/og-image">
@@ -49,7 +49,7 @@
   <p class="landing-tagline">9 divination systems. One powerful AI reading.<br>Discover who you truly are.</p>
 
   <!-- CTA Buttons -->
-  <button class="landing-cta" onclick="showAuthModal('signup')">Start Free — 30 Days Unlimited</button>
+  <button class="landing-cta" onclick="showAuthModal('signup')">Start Free — All Features Unlocked</button>
   <div class="landing-sub-cta">No credit card required</div>
   <div style="margin-top:12px;font-size:.9rem;color:var(--muted)">
     Already have an account? <a onclick="showAuthModal('signin')" style="color:var(--gold);cursor:pointer;text-decoration:underline;font-weight:500">Sign in</a>
@@ -57,8 +57,8 @@
 
   <!-- What You Get: Free Tier -->
   <div class="landing-section">
-    <h2 class="landing-section-title">Free for 30 Days</h2>
-    <p class="landing-section-sub">Everything unlocked. No limits. No credit card.</p>
+    <h2 class="landing-section-title">Free During Beta</h2>
+    <p class="landing-section-sub">Everything unlocked. Free while in beta.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <div class="fc-icon">&#128302;</div>
@@ -130,7 +130,14 @@
   <div class="landing-section" style="padding-bottom:40px">
     <h2 class="landing-section-title" style="font-size:1.6rem">Ready to discover your cosmic identity?</h2>
     <button class="landing-cta" onclick="showAuthModal('signup')" style="margin-top:16px">Create Free Account</button>
-    <div class="landing-sub-cta">30 days free &bull; Then just $4.99/mo</div>
+    <div class="landing-sub-cta">Free during beta</div>
+  </div>
+
+  <div style="margin-top:12px;font-size:.78rem;color:var(--dim)">Feedback? <a href="mailto:fred@aethera.live" style="color:var(--gold)">fred@aethera.live</a></div>
+  <div style="margin-top:16px;font-size:.7rem;color:var(--dim)">
+    <a href="https://github.com/TheGringo-ai/Aethera" target="_blank" rel="noopener" style="color:var(--dim);text-decoration:underline">Open Source</a>
+    <span style="margin:0 6px">|</span>
+    <span>&copy; 2026 Aethera</span>
   </div>
 
 </div>
@@ -328,6 +335,10 @@
 <!-- ════════════════════════════════════════════════════════════ -->
 <div id="results-screen">
 
+<div class="beta-banner" id="betaBanner">
+  &#128640; Aethera is in beta — all features free! <a href="mailto:fred@aethera.live">Send feedback</a> <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:var(--dim);cursor:pointer;margin-left:4px">&times;</button>
+</div>
+
 <!-- Sub-nav -->
 <div class="sub-nav" id="subNav"></div>
 
@@ -352,7 +363,7 @@
 
 <!-- Signup Banner -->
 <div class="signup-banner" id="signupBanner" style="display:none">
-  <div class="sb-title">&#10024; Unlock all features free for 30 days</div>
+  <div class="sb-title">&#10024; All features free during beta</div>
   <div class="signup-banner-actions">
     <button class="sb-cta" onclick="showAuthModal('signup')">Sign Up</button>
     <button class="sb-signin" onclick="showAuthModal('signin')">Sign In</button>
@@ -819,6 +830,113 @@
       <div class="settings-section" id="settingsAccountSection">
         <h3>Account</h3>
         <div id="settingsAccountContent"></div>
+      </div>
+
+      <div class="settings-section" style="text-align:center;padding:16px">
+        <a onclick="showTab('privacy')" style="color:var(--muted);font-size:.8rem;cursor:pointer;text-decoration:underline">Privacy Policy</a>
+        <span style="color:var(--dim);margin:0 8px">|</span>
+        <a onclick="showTab('terms')" style="color:var(--muted);font-size:.8rem;cursor:pointer;text-decoration:underline">Terms of Service</a>
+        <span style="color:var(--dim);margin:0 8px">|</span>
+        <a href="mailto:fred@aethera.live" style="color:var(--muted);font-size:.8rem;text-decoration:underline">Feedback</a>
+        <div style="margin-top:12px;font-size:.7rem;color:var(--dim)">Aethera Beta v1.0 &bull; &copy; 2026 Aethera</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Privacy Policy -->
+  <div class="tab-pane" id="tab-privacy">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">Privacy Policy</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">Last updated: March 2026</p>
+      <div class="legal-text">
+        <h3>1. What Data We Collect</h3>
+        <p>When you use Aethera, we collect the following information that you voluntarily provide:</p>
+        <ul>
+          <li>Email address (for account creation and authentication)</li>
+          <li>Birth data (date, time, and location — used to generate your readings)</li>
+          <li>Name and display name</li>
+          <li>Reading history and preferences</li>
+          <li>Social media handles (optional, for sharing features)</li>
+          <li>Palm and selfie photos (optional, for palm reading and aura features)</li>
+        </ul>
+
+        <h3>2. How We Use Your Data</h3>
+        <p>Your data is used exclusively to provide personalized cosmic readings and improve the Aethera experience. We do not sell your data. We do not serve ads. We do not share your personal information with third parties for marketing purposes.</p>
+
+        <h3>3. AI Processing</h3>
+        <p>Your birth data and reading inputs are sent to Google's Gemini API to generate personalized readings. This data is used solely for the purpose of generating your reading and is not stored by Google beyond the API call. No training is performed on your data.</p>
+
+        <h3>4. Data Storage</h3>
+        <p>Your account data and reading history are stored securely using Firebase Authentication and Google Cloud Firestore. Data is encrypted in transit and at rest. Photos uploaded for palm reading or aura features are processed in-session and are not permanently stored on our servers.</p>
+
+        <h3>5. Cookies &amp; Tracking</h3>
+        <p>Aethera does not use tracking cookies, analytics trackers, or advertising pixels. We use browser local storage to cache your profile for a faster experience.</p>
+
+        <h3>6. Third-Party Services</h3>
+        <p>Aethera uses the following third-party services:</p>
+        <ul>
+          <li><strong>Firebase Authentication</strong> — for secure sign-in (Google, email/password)</li>
+          <li><strong>Cloud Firestore</strong> — for storing your profile and reading data</li>
+          <li><strong>Google Gemini API</strong> — for AI-powered reading generation</li>
+        </ul>
+
+        <h3>7. Your Rights</h3>
+        <p>You have the right to:</p>
+        <ul>
+          <li>View all data we have about you</li>
+          <li>Update or correct your information via the Settings page</li>
+          <li>Request deletion of your account and all associated data</li>
+        </ul>
+        <p>To exercise any of these rights, contact us at <a href="mailto:fred@aethera.live">fred@aethera.live</a>.</p>
+
+        <h3>8. Contact</h3>
+        <p>For any privacy-related questions or concerns, reach out to <a href="mailto:fred@aethera.live">fred@aethera.live</a>.</p>
+      </div>
+      <div style="text-align:center;margin-top:24px">
+        <button class="settings-btn-secondary" onclick="showTab('settings')">Back to Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Terms of Service -->
+  <div class="tab-pane" id="tab-terms">
+    <div style="max-width:460px;margin:0 auto;padding:24px 16px">
+      <h2 style="text-align:center;margin-bottom:4px">Terms of Service</h2>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:24px">Last updated: March 2026</p>
+      <div class="legal-text">
+        <h3>1. Entertainment &amp; Self-Reflection</h3>
+        <p>Aethera is designed for entertainment and self-reflection purposes only. Readings generated by Aethera are not a substitute for professional advice — including but not limited to medical, psychological, financial, or legal advice. Please consult qualified professionals for serious life decisions.</p>
+
+        <h3>2. Beta Status</h3>
+        <p>Aethera is currently in beta. All features are provided free of charge during the beta period. Features, availability, and functionality may change at any time without notice as we continue to refine the experience.</p>
+
+        <h3>3. Account Responsibility</h3>
+        <p>You are responsible for maintaining the security of your account credentials. You agree to provide accurate birth data for reading purposes. You must be at least 13 years of age to create an account.</p>
+
+        <h3>4. Acceptable Use</h3>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use Aethera for any unlawful purpose</li>
+          <li>Attempt to access other users' accounts or data</li>
+          <li>Abuse, spam, or overload the service</li>
+          <li>Reverse engineer or scrape the application or API</li>
+          <li>Upload harmful, offensive, or illegal content</li>
+        </ul>
+
+        <h3>5. Open Source</h3>
+        <p>Aethera's source code is available on GitHub at <a href="https://github.com/TheGringo-ai/Aethera" target="_blank" rel="noopener">github.com/TheGringo-ai/Aethera</a>. Contributions are welcome.</p>
+
+        <h3>6. Limitation of Liability</h3>
+        <p>Aethera is provided "as is" without warranties of any kind. We are not liable for any decisions made based on readings, any inaccuracies in astrological or divinatory content, or any damages arising from use of the service. Your use of Aethera is at your own risk.</p>
+
+        <h3>7. Changes to Terms</h3>
+        <p>We may update these terms from time to time. Continued use of Aethera after changes constitutes acceptance of the updated terms.</p>
+
+        <h3>8. Contact</h3>
+        <p>Questions about these terms? Contact us at <a href="mailto:fred@aethera.live">fred@aethera.live</a>.</p>
+      </div>
+      <div style="text-align:center;margin-top:24px">
+        <button class="settings-btn-secondary" onclick="showTab('settings')">Back to Settings</button>
       </div>
     </div>
   </div>
