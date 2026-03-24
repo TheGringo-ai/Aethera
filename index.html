@@ -360,6 +360,17 @@
   <button class="sb-dismiss" onclick="dismissSignupBanner()">&times;</button>
 </div>
 
+<!-- Profile Completion Banner -->
+<div class="profile-banner" id="profileBanner" style="display:none">
+  <div class="pb-icon">&#9878;</div>
+  <div class="pb-text">
+    <div class="pb-title">Complete your Cosmic Profile</div>
+    <div class="pb-sub" id="profileBannerSub">Add birth time &amp; location for accurate Human Design</div>
+  </div>
+  <button class="pb-cta" onclick="navTo('me');showTab('settings')">Complete</button>
+  <button class="pb-dismiss" onclick="dismissProfileBanner()">&times;</button>
+</div>
+
 <div class="tab-content-area">
 
   <!-- TAB: Profile -->
@@ -740,6 +751,25 @@
             <option value="health">Health</option>
           </select>
         </div>
+        <div class="settings-divider" style="margin:16px 0"></div>
+        <h3 style="margin-top:4px">Social Links</h3>
+        <p style="color:var(--dim);font-size:.72rem;margin-bottom:12px">Share your readings with one tap</p>
+        <div class="settings-row">
+          <label>Instagram</label>
+          <input type="text" id="settings-instagram" placeholder="@username">
+        </div>
+        <div class="settings-row">
+          <label>TikTok</label>
+          <input type="text" id="settings-tiktok" placeholder="@username">
+        </div>
+        <div class="settings-row">
+          <label>Twitter/X</label>
+          <input type="text" id="settings-twitter" placeholder="@username">
+        </div>
+        <div class="settings-row">
+          <label>Facebook</label>
+          <input type="text" id="settings-facebook" placeholder="facebook.com/username">
+        </div>
         <button class="settings-btn" onclick="saveCosmicProfile()" style="margin-top:16px;background:linear-gradient(135deg,var(--accent),#9b59b6)">Save Cosmic Profile</button>
         <div class="settings-saved" id="cosmicSavedMsg">Cosmic profile saved! Your next reading will use this data.</div>
       </div>
@@ -764,20 +794,6 @@
           <textarea id="settings-bio" rows="2" maxlength="150" placeholder="Short bio (optional)" oninput="updateBioCount()"></textarea>
         </div>
         <div class="settings-char-count" id="bioCharCount">0/150</div>
-        <div class="settings-divider"></div>
-        <h3 style="margin-top:12px">Social Links</h3>
-        <div class="settings-row">
-          <label>Instagram</label>
-          <input type="text" id="settings-instagram" placeholder="@username">
-        </div>
-        <div class="settings-row">
-          <label>TikTok</label>
-          <input type="text" id="settings-tiktok" placeholder="@username">
-        </div>
-        <div class="settings-row">
-          <label>Twitter/X</label>
-          <input type="text" id="settings-twitter" placeholder="@username">
-        </div>
         <button class="settings-btn" onclick="saveUserSettings()" style="margin-top:16px">Save Display Profile</button>
         <div class="settings-saved" id="settingsSavedMsg">Profile saved!</div>
       </div>

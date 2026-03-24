@@ -163,9 +163,6 @@ async function loadFirestoreSettings() {
         display_name: d.settings_display_name || d.name || '',
         bio: d.settings_bio || '',
         avatar: d.settings_avatar || null,
-        social_instagram: d.settings_social_instagram || '',
-        social_tiktok: d.settings_social_tiktok || '',
-        social_twitter: d.settings_social_twitter || '',
         voice_mode: d.settings_voice_mode || 'browser',
       };
       try {
@@ -202,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof applyFeatureGating === 'function') applyFeatureGating();
       hideAllScreens();
       showWelcomeScreen();
+      checkProfileCompletion();
     } else {
       currentUser = null;
       userProfile = null;

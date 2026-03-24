@@ -379,6 +379,46 @@ function dismissSignupBanner() {
 }
 
 /* ════════════════════════════════════════════════════════════════
+   PROFILE COMPLETION BANNER
+   ════════════════════════════════════════════════════════════════ */
+let profileBannerDismissed = false;
+
+function checkProfileCompletion() {
+  if (!currentUser || profileBannerDismissed) return;
+  const profile = userProfile || getProfile() || {};
+
+  const missing = [];
+  if (!profile.birth_time) missing.push('birth time');
+  if (!profile.location) missing.push('birth location');
+  if (!profile.birthdate) missing.push('date of birth');
+  if (!profile.name) missing.push('name');
+
+  const banner = document.getElementById('profileBanner');
+  if (!banner) return;
+
+  if (missing.length > 0) {
+    const sub = document.getElementById('profileBannerSub');
+    if (missing.includes('date of birth') || missing.includes('name')) {
+      sub.textContent = 'Add your birth details for personalized readings';
+    } else if (missing.includes('birth time') && missing.includes('birth location')) {
+      sub.textContent = 'Add birth time & location for accurate Human Design & Rising sign';
+    } else if (missing.includes('birth time')) {
+      sub.textContent = 'Add your birth time for precise Human Design & Ascendant';
+    } else {
+      sub.textContent = 'Add birth location for accurate Rising sign & transits';
+    }
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function dismissProfileBanner() {
+  profileBannerDismissed = true;
+  document.getElementById('profileBanner').style.display = 'none';
+}
+
+/* ════════════════════════════════════════════════════════════════
    DAILY REMINDER
    ════════════════════════════════════════════════════════════════ */
 function requestReminder() {

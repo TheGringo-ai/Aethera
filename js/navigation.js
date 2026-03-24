@@ -95,6 +95,8 @@ function showTab(name) {
   if (name === 'settings') {
     loadUserSettings();
   }
+
+  if (currentUser) checkProfileCompletion();
 }
 
 /* ════════════════════════════════════════════════════════════════

@@ -19,6 +19,16 @@ function loadCosmicProfile() {
   if (btEl) btEl.value = profile.birth_time || '';
   if (locEl) locEl.value = profile.location || '';
   if (focusEl) focusEl.value = profile.focus_area || 'purpose';
+
+  // Load social links
+  const igEl = document.getElementById('settings-instagram');
+  const ttEl = document.getElementById('settings-tiktok');
+  const twEl = document.getElementById('settings-twitter');
+  const fbEl = document.getElementById('settings-facebook');
+  if (igEl) igEl.value = profile.settings_social_instagram || '';
+  if (ttEl) ttEl.value = profile.settings_social_tiktok || '';
+  if (twEl) twEl.value = profile.settings_social_twitter || '';
+  if (fbEl) fbEl.value = profile.settings_social_facebook || '';
 }
 
 function saveCosmicProfile() {
@@ -27,6 +37,10 @@ function saveCosmicProfile() {
   const birth_time = document.getElementById('settings-birthtime').value || null;
   const location = (document.getElementById('settings-location').value || '').trim() || null;
   const focus_area = document.getElementById('settings-focus').value || 'purpose';
+  const instagram = (document.getElementById('settings-instagram').value || '').trim();
+  const tiktok = (document.getElementById('settings-tiktok').value || '').trim();
+  const twitter = (document.getElementById('settings-twitter').value || '').trim();
+  const facebook = (document.getElementById('settings-facebook').value || '').trim();
 
   if (!name || !birthdate) {
     alert('Please enter your name and date of birth.');
@@ -53,6 +67,10 @@ function saveCosmicProfile() {
       birth_time: birth_time || null,
       location: location || null,
       focus_area,
+      settings_social_instagram: instagram,
+      settings_social_tiktok: tiktok,
+      settings_social_twitter: twitter,
+      settings_social_facebook: facebook,
     }).catch(e => console.error('Cosmic profile save error:', e));
 
     // Update in-memory profile
@@ -74,6 +92,8 @@ function saveCosmicProfile() {
   const msg = document.getElementById('cosmicSavedMsg');
   msg.classList.add('show');
   setTimeout(() => msg.classList.remove('show'), 3000);
+
+  checkProfileCompletion();
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -99,10 +119,6 @@ function loadUserSettings() {
   if (nameEl) nameEl.value = settings.display_name || (userProfile?.name || currentUser?.displayName || '');
   if (bioEl) { bioEl.value = settings.bio || ''; updateBioCount(); }
 
-  if (settings.social_instagram) document.getElementById('settings-instagram').value = settings.social_instagram;
-  if (settings.social_tiktok) document.getElementById('settings-tiktok').value = settings.social_tiktok;
-  if (settings.social_twitter) document.getElementById('settings-twitter').value = settings.social_twitter;
-
   if (settings.avatar) {
     showAvatarImage(settings.avatar);
   } else {
@@ -120,9 +136,6 @@ function saveUserSettings() {
     display_name: (document.getElementById('settings-name').value || '').trim(),
     bio: (document.getElementById('settings-bio').value || '').trim(),
     avatar: _currentAvatarBase64 || null,
-    social_instagram: (document.getElementById('settings-instagram').value || '').trim(),
-    social_tiktok: (document.getElementById('settings-tiktok').value || '').trim(),
-    social_twitter: (document.getElementById('settings-twitter').value || '').trim(),
     voice_mode: _voiceMode,
   };
   try {
@@ -134,9 +147,6 @@ function saveUserSettings() {
       settings_display_name: settings.display_name,
       settings_bio: settings.bio,
       settings_avatar: settings.avatar,
-      settings_social_instagram: settings.social_instagram,
-      settings_social_tiktok: settings.social_tiktok,
-      settings_social_twitter: settings.social_twitter,
       settings_voice_mode: settings.voice_mode,
     }).catch(e => console.error('Settings save error:', e));
   }
