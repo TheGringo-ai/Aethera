@@ -19,9 +19,9 @@ function initChat() {
   if (div) {
     const sign = div.western_astrology?.sign || '';
     const hdType = div.human_design?.type || '';
-    welcome = `Welcome, ${name}. I sense the energy of a ${sign}${hdType ? ' ' + hdType : ''} before me. The cosmos has much to reveal — ask me anything about your chart, your design, or what the stars hold for you.`;
+    welcome = `Welcome, ${name}. I am your Celestial Guide. I sense the energy of a ${sign}${hdType ? ' ' + hdType : ''} before me. The cosmos has much to reveal — ask me anything about your chart, your design, your transits, or what the stars hold for you.`;
   } else {
-    welcome = `Welcome, ${name}. I am Aethera, your cosmic oracle. Get a reading first to unlock the full depth of our conversation, or ask me anything about astrology, numerology, or Human Design.`;
+    welcome = `Welcome, ${name}. I am your Celestial Guide — here to illuminate your path through the stars. Get a reading first to unlock the full depth of our conversation, or ask me anything about astrology, numerology, or Human Design.`;
   }
   appendChatMessage('aethera', welcome);
   renderSuggestions();

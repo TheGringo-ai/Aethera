@@ -8,7 +8,7 @@ const NAV_SECTIONS = {
       {id:'profile', icon:'&#10022;', label:'Profile'},
       {id:'reading', icon:'&#128302;', label:'Reading'},
       {id:'today', icon:'&#9889;', label:'Today'},
-    {id:'chat', icon:'&#10024;', label:'Chat'},
+    {id:'chat', icon:'&#10024;', label:'Guide'},
     ],
     default: 'profile',
   },
