@@ -40,7 +40,19 @@ function saveProfile(body) {
   };
   try { localStorage.setItem('aethera_profile', JSON.stringify(profile)); } catch(e) {}
 
-  // Also sync to Firestore if signed in
+  // Update in-memory userProfile so subsequent checks see the data immediately
+  if (userProfile) {
+    userProfile.name = profile.name;
+    userProfile.birthdate = profile.birthdate;
+    userProfile.birth_time = profile.birth_time || null;
+    userProfile.location = profile.location || null;
+    userProfile.personality_answers = profile.personality_answers;
+    userProfile.focus_area = profile.focus_area;
+    userProfile.language = profile.language;
+    userProfile.email = profile.email || userProfile.email;
+  }
+
+  // Sync to Firestore
   if (currentUser) {
     saveUserProfile(currentUser.uid, {
       name: profile.name,

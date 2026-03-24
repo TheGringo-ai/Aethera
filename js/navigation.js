@@ -190,12 +190,36 @@ function getReturnReading() {
   const birthdate = fsProfile.birthdate || localProfile.birthdate || '';
 
   if (!name || !birthdate) {
-    // Truly missing — show form
+    // Missing critical data — show simplified form for signed-in users
     hideAllScreens();
-    showFullProfileForm();
-    if (name) document.getElementById('inp-name').value = name;
-    if (currentUser?.email) document.getElementById('inp-email').value = currentUser.email;
+    document.getElementById('landing-screen').style.display = 'none';
+    document.getElementById('intro-screen').style.display = 'flex';
+    // Hide personality questions + email for returning users — just need name + DOB
+    if (currentUser) {
+      document.querySelectorAll('.full-profile-only').forEach(el => el.style.display = 'none');
+      document.getElementById('submitBtn').textContent = 'Get My Reading';
+    } else {
+      document.querySelectorAll('.full-profile-only').forEach(el => el.style.display = '');
+      document.getElementById('submitBtn').textContent = 'Reveal My Cosmic Profile';
+    }
+    // Pre-fill what we have
+    document.getElementById('inp-name').value = name || '';
+    document.getElementById('inp-email').value = currentUser?.email || '';
     if (birthdate) document.getElementById('inp-birthdate').value = birthdate;
+    // Pre-fill birth time + location if available
+    const bt = fsProfile.birth_time || localProfile.birth_time || '';
+    const loc = fsProfile.location || localProfile.location || '';
+    if (bt) document.getElementById('inp-birth-time').value = bt;
+    if (loc) document.getElementById('inp-location').value = loc;
+    // Pre-select focus area if saved
+    const fa = fsProfile.focus_area || localProfile.focus_area || '';
+    if (fa) {
+      focusArea = fa;
+      document.querySelectorAll('.focus-btn').forEach(b => b.classList.remove('selected'));
+      const fb = document.querySelector('.focus-btn[data-focus="' + fa + '"]');
+      if (fb) fb.classList.add('selected');
+    }
+    freeTrialMode = !!currentUser; // simplified mode for signed-in users
     checkReady();
     return;
   }
