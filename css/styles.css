@@ -352,6 +352,15 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:600}
 .typing-dot:nth-child(3){animation-delay:.4s}
 @keyframes typingPulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
 
+/* ── Dream Interpreter ── */
+.dream-archetype-card{background:linear-gradient(165deg,#1a0a40,#0d1a2e)!important;border-color:var(--gold)!important}
+.dream-symbols-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.dream-symbol-card{background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:14px}
+.dream-symbol-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--gold);margin-bottom:4px;text-transform:capitalize}
+.dream-symbol-meaning{font-size:.85rem;color:var(--text);line-height:1.5;margin-bottom:6px}
+.dream-symbol-cosmic{font-size:.78rem;color:var(--accent2);font-style:italic;line-height:1.4}
+.dream-technique-pill{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.7rem;color:var(--muted)}
+
 /* ── Responsive ── */
 
 /* Small phones (SE, older devices) */
