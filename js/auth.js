@@ -87,6 +87,12 @@ async function loadUserProfile(uid) {
     const doc = await fbDb.collection('aethera_users').doc(uid).get();
     if (doc.exists) {
       userProfile = doc.data();
+      // Restore saved language preference
+      if (userProfile.language && userProfile.language !== currentLang) {
+        currentLang = userProfile.language;
+        buildLangBar();
+        applyTranslations();
+      }
     } else {
       const localProfile = getProfile();
       const localReading = getLastReading();

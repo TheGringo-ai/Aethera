@@ -184,11 +184,24 @@ function populateWelcomeScreen() {
 
 function getReturnReading() {
   const profile = userProfile || getProfile();
-  if (!profile || !profile.birthdate) {
+  if (!profile || !profile.birthdate || !profile.name) {
+    // Profile incomplete — show form so user can fill in missing fields
     hideAllScreens();
     showFullProfileForm();
+    // Pre-fill what we already have
+    if (profile?.name || currentUser?.displayName) {
+      document.getElementById('inp-name').value = profile?.name || currentUser?.displayName || '';
+    }
+    if (currentUser?.email) {
+      document.getElementById('inp-email').value = currentUser.email;
+    }
+    if (profile?.birthdate) {
+      document.getElementById('inp-birthdate').value = profile.birthdate;
+    }
+    checkReady();
     return;
   }
+  // Profile is complete — go straight to reading
   getReading(true);
 }
 

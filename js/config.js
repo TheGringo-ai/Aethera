@@ -321,6 +321,26 @@ function setLang(code) {
   currentLang = code;
   buildLangBar();
   applyTranslations();
+
+  // Persist language to Firestore if signed in
+  if (typeof currentUser !== 'undefined' && currentUser) {
+    fbDb.collection('aethera_users').doc(currentUser.uid).update({
+      language: currentLang
+    }).catch(function(e) { console.error('Language save error:', e); });
+    // Update in-memory profile
+    if (typeof userProfile !== 'undefined' && userProfile) {
+      userProfile.language = currentLang;
+    }
+  }
+  // Persist language to localStorage profile
+  try {
+    var raw = localStorage.getItem('aethera_profile');
+    if (raw) {
+      var p = JSON.parse(raw);
+      p.language = currentLang;
+      localStorage.setItem('aethera_profile', JSON.stringify(p));
+    }
+  } catch(e) {}
 }
 
 function t(key) {
