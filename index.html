@@ -542,11 +542,12 @@
   <div class="tab-pane" id="tab-dream">
     <div style="max-width:460px;margin:0 auto;padding:24px 16px">
       <h2 style="text-align:center;margin-bottom:4px">&#127769; Dream Interpreter</h2>
-      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:20px">AI-powered dream analysis using your cosmic profile</p>
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:20px">Professional AI dream analysis powered by your cosmic profile</p>
       <div class="form-group">
         <label style="color:var(--gold);font-size:.9rem;margin-bottom:8px;display:block">Describe your dream in as much detail as you can remember</label>
-        <textarea id="dream-input" rows="6" placeholder="I was walking through a forest when I saw a door..."
+        <textarea id="dream-input" rows="6" placeholder="I was walking through a forest when I saw a glowing door. Behind it I could hear water rushing. I felt both scared and drawn to it..."
                   style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;color:var(--text);font-size:.95rem;resize:vertical;font-family:'Inter',sans-serif;line-height:1.6"></textarea>
+        <div style="font-size:.7rem;color:var(--dim);margin-top:6px;text-align:right">Include emotions, colors, people, objects, and settings for deeper analysis</div>
       </div>
       <button class="cta" id="dream-submit-btn" onclick="interpretDream()" style="margin-top:12px;width:100%">&#127769; Interpret My Dream</button>
       <div id="dream-loading" style="display:none;text-align:center;padding:40px 0">
@@ -554,14 +555,63 @@
         <p style="color:var(--muted);font-size:.9rem;font-family:'Cormorant Garamond',serif;font-style:italic">Entering the dream realm...</p>
       </div>
       <div id="dream-results"></div>
+
+      <!-- Follow-up chat (shown after interpretation) -->
+      <div id="dream-chat-section" style="display:none">
+        <div style="border-top:1px solid var(--border);margin:24px 0 16px;padding-top:16px">
+          <h4 style="color:var(--gold);font-size:1rem;margin-bottom:8px;text-align:center">Ask follow-up questions about your dream</h4>
+          <div id="dream-chat-messages" style="max-height:300px;overflow-y:auto;margin-bottom:12px"></div>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="dream-chat-input" placeholder="What does the water symbolize for me?"
+                   style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text);font-size:.9rem"
+                   onkeydown="if(event.key==='Enter')sendDreamFollowUp()">
+            <button onclick="sendDreamFollowUp()" style="background:linear-gradient(135deg,var(--accent),var(--gold));border:none;border-radius:12px;width:44px;color:#fff;font-size:1.1rem;cursor:pointer">&#10148;</button>
+          </div>
+          <div id="dream-chat-typing" style="display:none;padding:6px 0;font-size:.78rem;color:var(--muted);font-style:italic">Aethera is reflecting on your dream...</div>
+        </div>
+      </div>
+
+      <!-- Techniques deep-dive -->
       <details class="div-section learn-more" style="cursor:pointer;margin-top:24px">
-        <summary style="color:var(--accent);font-size:.85rem;font-weight:500">About Dream Interpretation</summary>
+        <summary style="color:var(--accent);font-size:.85rem;font-weight:500">Learn More: Dream Interpretation Techniques</summary>
         <div style="margin-top:12px;font-size:.85rem;line-height:1.7;color:var(--muted)">
-          <p>Aethera analyzes your dreams using a synthesis of the world's most respected dream interpretation frameworks:</p>
-          <p style="margin-top:8px"><strong style="color:var(--text)">Jungian Analysis</strong> — Carl Jung's archetypes, shadow integration, and the collective unconscious. Dreams reveal parts of yourself seeking recognition.</p>
-          <p style="margin-top:8px"><strong style="color:var(--text)">Gestalt Dreamwork</strong> — Fritz Perls' approach where every dream element represents a part of you. The monster, the door, the water — all are you.</p>
-          <p style="margin-top:8px"><strong style="color:var(--text)">Mythological/Archetypal</strong> — Joseph Campbell's hero's journey and universal mythic patterns that appear in dreams across all cultures.</p>
-          <p style="margin-top:8px"><strong style="color:var(--text)">Cosmic Integration</strong> — Your dream symbols are mapped to your natal chart, Human Design, and numerological profile. A Pisces dreaming of water has a different meaning than a Leo dreaming of water.</p>
+          <p>Aethera synthesizes <strong style="color:var(--text)">8 professional dream interpretation frameworks</strong> to give you the most comprehensive analysis possible:</p>
+
+          <h4 style="color:var(--gold);font-size:.95rem;margin:16px 0 6px">1. Jungian Analytical Psychology</h4>
+          <p>Founded by <strong style="color:var(--text)">Carl Jung</strong> (1875-1961), this approach sees dreams as messages from the unconscious mind. Key concepts include:</p>
+          <p style="margin-top:4px"><em style="color:var(--accent2)">Archetypes</em> — Universal patterns like The Shadow (your hidden self), The Anima/Animus (your inner opposite gender), The Self (your wholeness), and The Wise Old Man/Woman. When these appear in dreams, they signal psychological growth.</p>
+          <p style="margin-top:4px"><em style="color:var(--accent2)">Individuation</em> — Jung believed dreams guide you toward becoming your complete, authentic self. Recurring dream themes often point to aspects of yourself you haven't yet integrated.</p>
+          <p style="margin-top:4px"><em style="color:var(--accent2)">Collective Unconscious</em> — Symbols shared across all human cultures (water = emotion, flying = freedom, teeth falling = anxiety about change). These appear in YOUR dreams with YOUR unique twist.</p>
+
+          <h4 style="color:var(--gold);font-size:.95rem;margin:16px 0 6px">2. Freudian Dream Analysis</h4>
+          <p><strong style="color:var(--text)">Sigmund Freud</strong> called dreams "the royal road to the unconscious." His framework distinguishes between:</p>
+          <p style="margin-top:4px"><em style="color:var(--accent2)">Manifest content</em> — What you literally see and experience in the dream.</p>
+          <p style="margin-top:4px"><em style="color:var(--accent2)">Latent content</em> — The hidden meaning behind the symbols. A locked door isn't just a door — it may represent an opportunity you feel barred from, or a truth you're not ready to face.</p>
+          <p style="margin-top:4px"><em style="color:var(--accent2)">Wish fulfillment</em> — Dreams often express desires your waking mind suppresses.</p>
+
+          <h4 style="color:var(--gold);font-size:.95rem;margin:16px 0 6px">3. Gestalt Dreamwork</h4>
+          <p><strong style="color:var(--text)">Fritz Perls</strong> revolutionized dream work with one powerful idea: every element in your dream IS you. The monster chasing you? That's a part of you. The house you're exploring? That's your psyche. The stranger helping you? That's an unrecognized aspect of yourself.</p>
+          <p style="margin-top:4px">In Gestalt work, you would "become" each dream element and speak from its perspective. Aethera does this for you — examining what each symbol reveals about different parts of your inner world.</p>
+
+          <h4 style="color:var(--gold);font-size:.95rem;margin:16px 0 6px">4. Mythological / Archetypal Analysis</h4>
+          <p>Based on <strong style="color:var(--text)">Joseph Campbell's</strong> work on the Hero's Journey and universal myths. Your dreams often follow the same narrative structures found in myths across every culture:</p>
+          <p style="margin-top:4px"><em style="color:var(--accent2)">The Call to Adventure</em> — Dreams about journeys, doors, or invitations. <em style="color:var(--accent2)">The Descent</em> — Dreams about going underground, underwater, or into darkness. <em style="color:var(--accent2)">The Transformation</em> — Dreams about death, rebirth, shape-shifting. <em style="color:var(--accent2)">The Return</em> — Dreams about coming home or finding something lost.</p>
+
+          <h4 style="color:var(--gold);font-size:.95rem;margin:16px 0 6px">5. Spiritual / Transpersonal</h4>
+          <p>Draws from <strong style="color:var(--text)">Stanislav Grof</strong>, <strong style="color:var(--text)">Roberto Assagioli</strong>, and contemplative traditions. Some dreams transcend personal psychology — they touch on spiritual awakening, past-life echoes, precognitive insights, or contact with collective consciousness. Aethera identifies when your dream may carry transpersonal significance.</p>
+
+          <h4 style="color:var(--gold);font-size:.95rem;margin:16px 0 6px">6. Astrological Transit Analysis</h4>
+          <p>Your <strong style="color:var(--text)">current planetary transits</strong> directly influence your dream life. Saturn transiting your Moon? Expect dreams about emotional responsibility. Pluto crossing your Sun? Transformation dreams. Neptune activating your chart? Vivid, mystical, or confusing dreams. Aethera cross-references your dream themes with your active transits.</p>
+
+          <h4 style="color:var(--gold);font-size:.95rem;margin:16px 0 6px">7. Human Design Energy Analysis</h4>
+          <p>Your <strong style="color:var(--text)">Human Design type</strong> affects how you process dreams. Generators often dream about energy and response. Manifestors dream about impact and initiation. Projectors dream about recognition and guidance. Reflectors dream about community and reflection. Your <strong style="color:var(--text)">Authority</strong> determines which dream signals to trust most.</p>
+
+          <h4 style="color:var(--gold);font-size:.95rem;margin:16px 0 6px">8. Numerological Symbolism</h4>
+          <p>Numbers that appear in dreams carry <strong style="color:var(--text)">vibrational meaning</strong> connected to your Life Path. Seeing the number 3 when your Life Path is 3 is a powerful confirmation signal. Groups of objects (3 doors, 7 stairs, 11 birds) are analyzed against your numerological profile for hidden messages.</p>
+
+          <div style="margin-top:16px;padding:12px;background:var(--card2);border-radius:10px">
+            <p style="color:var(--accent2);font-size:.8rem;font-weight:500">Pro tip: Keep a dream journal. The more dreams you interpret with Aethera, the more patterns emerge. Recurring symbols build a personal dream dictionary unique to YOUR psyche and chart.</p>
+          </div>
         </div>
       </details>
     </div>

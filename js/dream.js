@@ -147,10 +147,82 @@ function renderDreamResults(data) {
 
   results.innerHTML = html;
   results.scrollIntoView({behavior: 'smooth'});
+
+  // Store dream context for follow-up chat
+  window._lastDreamText = document.getElementById('dream-input').value.trim();
+  window._lastDreamInterpretation = (data.archetype || '') + '. ' + (data.interpretation || '').substring(0, 200);
+
+  // Show follow-up chat section
+  const chatSection = document.getElementById('dream-chat-section');
+  if (chatSection) {
+    chatSection.style.display = 'block';
+    document.getElementById('dream-chat-messages').innerHTML = '';
+    appendDreamChat('aethera', 'I\'ve analyzed your dream. Ask me anything — what does a specific symbol mean for you? How does it connect to your life right now? Want to explore a particular part deeper?');
+  }
 }
 
 function resetDream() {
   document.getElementById('dream-input').value = '';
   document.getElementById('dream-results').innerHTML = '';
+  document.getElementById('dream-chat-section').style.display = 'none';
+  document.getElementById('dream-chat-messages').innerHTML = '';
+  window._lastDreamText = null;
+  window._lastDreamInterpretation = null;
   document.getElementById('dream-input').focus();
+}
+
+/* ════════════════════════════════════════════════════════════════
+   DREAM FOLLOW-UP CHAT — ask questions about the interpretation
+   ════════════════════════════════════════════════════════════════ */
+async function sendDreamFollowUp() {
+  const input = document.getElementById('dream-chat-input');
+  const question = input.value.trim();
+  if (!question) return;
+  if (!currentUser) { showAuthModal('signup'); return; }
+
+  input.value = '';
+  appendDreamChat('user', question);
+
+  const typing = document.getElementById('dream-chat-typing');
+  typing.style.display = 'block';
+
+  try {
+    // Use the chat endpoint with dream context baked in
+    const dreamContext = 'The seeker described this dream: "' + (window._lastDreamText || '') +
+      '"\n\nYour previous interpretation identified: ' + (window._lastDreamInterpretation || '') +
+      '\n\nThe seeker now asks a follow-up question about this dream.';
+
+    const body = {
+      message: question + '\n\n[DREAM CONTEXT: ' + dreamContext + ']',
+      language: currentLang,
+      reading_context: readingData || null,
+    };
+
+    const res = await fetch('/v1/aethera/chat', {
+      method: 'POST',
+      headers: await getAuthHeaders(),
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) throw new Error('Failed');
+    const data = await res.json();
+    typing.style.display = 'none';
+    appendDreamChat('aethera', data.reply);
+
+  } catch (e) {
+    typing.style.display = 'none';
+    appendDreamChat('aethera', 'The dream realm flickers... please try again.');
+  }
+}
+
+function appendDreamChat(role, content) {
+  const container = document.getElementById('dream-chat-messages');
+  const wrapper = document.createElement('div');
+  wrapper.className = 'chat-msg chat-' + role;
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble chat-bubble-' + role;
+  bubble.textContent = content;
+  wrapper.appendChild(bubble);
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
 }
