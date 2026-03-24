@@ -188,10 +188,22 @@ function getReturnReading() {
   // Gather profile data from ALL sources
   const fsProfile = userProfile || {};
   const localProfile = getProfile() || {};
+  const lastReading = fsProfile.last_reading || getLastReading();
   const name = fsProfile.name || localProfile.name || currentUser?.displayName || '';
-  const birthdate = fsProfile.birthdate || localProfile.birthdate || '';
+  let birthdate = fsProfile.birthdate || localProfile.birthdate || '';
 
+  // Recover birthdate from last reading's request data if stored
+  if (!birthdate && lastReading && lastReading.birthdate) {
+    birthdate = lastReading.birthdate;
+  }
+
+  // If signed in and we have both, persist any recovered data and go straight to reading
   if (name && birthdate) {
+    // If birthdate was recovered (not in Firestore), save it now
+    if (currentUser && !fsProfile.birthdate && birthdate) {
+      fbDb.collection('aethera_users').doc(currentUser.uid).update({ birthdate }).catch(() => {});
+      if (userProfile) userProfile.birthdate = birthdate;
+    }
     // Profile is complete — merge and go straight to reading
     _mergeProfileData(fsProfile, localProfile, name, birthdate);
     getReading(true);

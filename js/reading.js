@@ -67,6 +67,18 @@ async function getReading(fromWelcome) {
 
     if (currentUser) {
       saveReadingToFirestore(currentUser.uid, readingData);
+      // Always sync the full cosmic profile to Firestore after every reading
+      // so the user NEVER has to fill the form again
+      saveUserProfile(currentUser.uid, {
+        name: body.name,
+        email: body.email || currentUser.email,
+        birthdate: body.birthdate,
+        birth_time: body.birth_time || null,
+        location: body.location || null,
+        personality_answers: body.personality_answers || [0,0,0,0,0],
+        focus_area: body.focus_area || 'purpose',
+        language: body.language || currentLang,
+      });
     }
 
     renderResults(readingData);

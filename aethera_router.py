@@ -46,13 +46,28 @@ def _get_firebase_app():
 
 async def require_auth(request: Request) -> dict:
     """Dependency: require valid Firebase auth token.
-    Validates that a Bearer token is present (proof the user authenticated
-    via Firebase client SDK). Server-side token verification can be enabled
-    later by setting AETHERA_VERIFY_TOKENS=1 with proper service account."""
+    Verifies the token server-side via Firebase Admin SDK and returns the
+    authenticated user's UID. Falls back to token-present check only if
+    Firebase Admin SDK is unavailable."""
     auth_header = request.headers.get("Authorization", "")
     if not auth_header.startswith("Bearer "):
         raise HTTPException(401, "Authentication required. Please sign in.")
-    return {"uid": "authenticated", "token_present": True}
+
+    token = auth_header[7:]  # strip "Bearer "
+
+    # Verify token with Firebase Admin SDK
+    app = _get_firebase_app()
+    if app and app is not False:
+        try:
+            from firebase_admin import auth as fb_auth
+            decoded = fb_auth.verify_id_token(token, app=app)
+            return {"uid": decoded["uid"], "email": decoded.get("email", ""), "token_verified": True}
+        except Exception as e:
+            logger.warning(f"Token verification failed: {e}")
+            raise HTTPException(401, "Invalid or expired authentication token. Please sign in again.")
+
+    # Fallback: Firebase Admin not available — accept token presence only
+    return {"uid": "unverified", "token_present": True}
 
 # Language display names for AI prompt
 _LANGUAGE_NAMES = {
@@ -128,6 +143,7 @@ class AetheraRequest(BaseModel):
 
 class AetheraResponse(BaseModel):
     name: str
+    birthdate: Optional[str] = None
     divination: dict
     cosmic_reading: str
     aura_color: str
@@ -189,6 +205,7 @@ async def get_reading(req: AetheraRequest, request: Request, user: dict = Depend
 
     return AetheraResponse(
         name=req.name,
+        birthdate=str(req.birthdate),
         divination=divination,
         cosmic_reading=parsed["reading"],
         aura_color=aura.get("color", "Blue"),
