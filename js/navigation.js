@@ -26,10 +26,11 @@ const NAV_SECTIONS = {
   },
   tools: {
     tabs: [
+      {id:'dream', icon:'&#127769;', label:'Dreams'},
       {id:'tarot', icon:'&#127183;', label:'Tarot'},
       {id:'palm', icon:'&#9995;', label:'Palm'},
     ],
-    default: 'tarot',
+    default: 'dream',
   },
   social: {
     tabs: [
@@ -85,6 +86,9 @@ function showTab(name) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 
   // Load settings when settings tab is shown
+  if (name === 'dream') {
+    initDream();
+  }
   if (name === 'chat') {
     initChat();
   }

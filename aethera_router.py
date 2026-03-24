@@ -1106,6 +1106,21 @@ class ChatResponse(BaseModel):
     suggestions: List[str] = []
 
 
+class DreamRequest(BaseModel):
+    dream_text: str = Field(..., min_length=10, max_length=5000)
+    language: str = Field(default="en", pattern="^(en|es|fr|pt|de|ja|ko|zh)$")
+    reading_context: Optional[dict] = None
+
+
+class DreamResponse(BaseModel):
+    interpretation: str
+    symbols: List[dict]  # [{symbol, meaning, cosmic_connection}]
+    archetype: str  # dream archetype (e.g. "The Journey", "The Shadow")
+    cosmic_connections: str  # how the dream connects to their chart
+    guidance: str  # actionable guidance from the dream
+    techniques_used: List[str]  # which interpretation methods were used
+
+
 def _extract_cosmic_summary(reading_context: dict) -> str:
     """Extract a concise cosmic profile summary from the frontend readingData."""
     if not reading_context:
@@ -1579,4 +1594,288 @@ def _fallback_reading(name: str, div: dict, focus_area: str = "purpose") -> str:
         f"Today, your biorhythm shows physical energy at {div['biorhythm']['physical']}%, "
         f"emotional flow at {div['biorhythm']['emotional']}%, and intellectual sharpness at {div['biorhythm']['intellectual']}%. "
         f"Regarding your {focus_area}, trust the cosmic patterns unfolding around you."
+    )
+
+
+# ─── Dream Interpretation ────────────────────────────────────────────────────
+
+# Separate rate cache for dream interpretations
+_dream_rate_cache: dict = {}
+
+
+def _build_dream_prompt(dream_text: str, cosmic_summary: str, language: str) -> str:
+    """Build the dream interpretation prompt using multiple professional techniques."""
+    lang_name = _LANGUAGE_NAMES.get(language, "English")
+    lang_instruction = (
+        f"\n\nCRITICAL: Write the ENTIRE interpretation in {lang_name}. "
+        f"Section labels (INTERPRETATION, SYMBOLS, etc.) must remain in English as markers, "
+        f"but all content text must be in {lang_name}."
+        if language != "en" else ""
+    )
+
+    has_astrology = any(k in cosmic_summary for k in ["Sun:", "Moon:", "Rising:"])
+    has_hd = "Human Design:" in cosmic_summary
+    has_numerology = "Life Path:" in cosmic_summary
+
+    techniques_section = """INTERPRETATION TECHNIQUES TO APPLY:
+
+1. JUNGIAN ANALYSIS: Identify archetypes present (Shadow, Anima/Animus, the Self, the Wise Old Man/Woman, the Trickster). Look for symbols of the collective unconscious. Assess what the dream reveals about the dreamer's individuation process and shadow integration.
+
+2. FREUDIAN SYMBOLISM: Distinguish between the manifest content (what literally happened) and the latent content (hidden meaning). Identify wish fulfillment elements and any condensation or displacement of emotions.
+
+3. GESTALT DREAMWORK: Treat every element in the dream — every person, object, animal, and landscape — as a projection of a part of the dreamer. What does each element say about the dreamer's inner world?
+
+4. MYTHOLOGICAL/ARCHETYPAL (Joseph Campbell): Map the dream to the hero's journey stages — is the dreamer in the Departure, Initiation, or Return phase? Identify universal mythological symbols (the threshold, the abyss, the treasure, the return).
+
+5. SPIRITUAL/TRANSPERSONAL: Assess prophetic or precognitive elements. Identify astral symbolism, chakra connections (which energy centers are activated), and any messages from the higher self or spiritual guides."""
+
+    if has_astrology:
+        techniques_section += """
+
+6. ASTROLOGICAL TRANSIT ANALYSIS: Connect dream themes and symbols directly to the dreamer's natal chart and current planetary transits. Water dreams for water signs, fire/conflict dreams during Mars transits, transformation dreams during Pluto aspects."""
+
+    if has_hd:
+        techniques_section += """
+
+7. HUMAN DESIGN ENERGY ANALYSIS: Connect dream patterns to the dreamer's Human Design type, authority, and strategy. Generators may dream of satisfaction vs frustration, Projectors of recognition vs bitterness, Manifestors of initiation vs anger, Reflectors of surprise vs disappointment."""
+
+    if has_numerology:
+        techniques_section += """
+
+8. NUMEROLOGICAL SYMBOLISM: Identify numbers appearing in the dream (people, objects, repetitions, floors, doors) and connect them to the dreamer's Life Path number and personal year cycle."""
+
+    return f"""You are Aethera, a cosmic oracle who is also a masterfully trained dream analyst. You weave together ancient wisdom traditions with professional dream interpretation techniques to deliver profound, personalized dream analysis.
+
+THE DREAMER'S COSMIC PROFILE:
+{cosmic_summary}
+
+THE DREAM:
+{dream_text}
+
+{techniques_section}
+
+INSTRUCTIONS:
+Analyze this dream through ALL applicable techniques above, then synthesize your findings into a unified interpretation. Personalize everything to the dreamer's cosmic profile.
+
+Format your response EXACTLY as follows:
+
+ARCHETYPE: [Name the dream archetype — choose from or adapt: The Journey, The Shadow, The Transformation, The Threshold, The Descent, The Ascent, The Mirror, The Storm, The Garden, The Labyrinth, The Flight, The Return, The Initiation, The Reunion, The Dissolution, The Creation. Pick the one that best captures the dream's core energy.]
+
+INTERPRETATION:
+[3-4 paragraphs weaving together insights from all applicable techniques. Start with the dominant theme, move through the symbolic layers, and close with the dream's deepest message. Reference the dreamer's specific cosmic data (signs, life path, HD type) throughout. This should feel like a profound personal revelation, not a textbook analysis.]
+
+SYMBOLS:
+[List each significant symbol from the dream, one per line, in this exact format:]
+symbol_name|meaning and significance|connection to the dreamer's cosmic profile
+[Example:]
+water|Emotional depth and the unconscious mind|Connected to your Pisces Sun — water is your native element
+door|Transition and new opportunities|Your Life Path 7 seeks hidden doorways to truth
+[Include 4-8 symbols. Every symbol MUST have all three parts separated by pipes.]
+
+COSMIC_CONNECTIONS:
+[2-3 paragraphs explaining how this dream connects to the dreamer's chart, transits, Human Design type, life path number, and current cosmic weather. Be specific — reference actual data from their profile.]
+
+GUIDANCE:
+[2-3 paragraphs of actionable guidance drawn from the dream's message. What should the dreamer do, reflect on, or change? Include a specific ritual, meditation, or practice they can try. Connect the guidance to their cosmic profile.]
+
+CRITICAL RULES:
+- Stay in character as Aethera, a mystical cosmic dream oracle, at ALL times.
+- NEVER mention AI, technology, algorithms, or break character.
+- NEVER use generic dream dictionary entries — every interpretation must feel deeply personal.
+- Reference the dreamer's actual cosmic data (signs, numbers, HD type) throughout.
+- Be warm, wise, and specific — never vague or generic.{lang_instruction}"""
+
+
+def _parse_dream_symbols(raw_text: str) -> List[dict]:
+    """Parse dream symbols from the SYMBOLS section of the AI response."""
+    symbols = []
+    if "SYMBOLS:" not in raw_text:
+        return symbols
+
+    # Extract the SYMBOLS section
+    symbols_section = raw_text.split("SYMBOLS:", 1)[1]
+    # Find where it ends (next section marker)
+    for marker in ["COSMIC_CONNECTIONS:", "GUIDANCE:"]:
+        if marker in symbols_section:
+            symbols_section = symbols_section.split(marker)[0]
+            break
+
+    for line in symbols_section.strip().split("\n"):
+        line = line.strip().lstrip("- ").strip()
+        if "|" not in line or len(line) < 5:
+            continue
+        parts = line.split("|")
+        if len(parts) >= 3:
+            symbols.append({
+                "symbol": parts[0].strip(),
+                "meaning": parts[1].strip(),
+                "cosmic_connection": parts[2].strip(),
+            })
+        elif len(parts) == 2:
+            symbols.append({
+                "symbol": parts[0].strip(),
+                "meaning": parts[1].strip(),
+                "cosmic_connection": "",
+            })
+
+    return symbols
+
+
+def _determine_techniques_used(cosmic_summary: str) -> List[str]:
+    """Determine which interpretation techniques were applied based on available data."""
+    techniques = ["Jungian Analysis", "Gestalt Dreamwork", "Mythological/Archetypal"]
+
+    if any(k in cosmic_summary for k in ["Sun:", "Moon:", "Rising:"]):
+        techniques.append("Astrological Transit Analysis")
+
+    if "Human Design:" in cosmic_summary:
+        techniques.append("Human Design Energy Analysis")
+
+    if "Life Path:" in cosmic_summary:
+        techniques.append("Numerological Symbolism")
+
+    # Always include these foundational methods
+    techniques.append("Freudian Symbolism")
+    techniques.append("Spiritual/Transpersonal")
+
+    return techniques
+
+
+@router.post("/dream", response_model=DreamResponse)
+async def dream_interpretation(
+    req: DreamRequest, request: Request, user: dict = Depends(require_auth)
+):
+    """Interpret a dream using multiple professional techniques, personalized to the seeker's cosmic profile."""
+    # Rate limit: 10 dream interpretations/hour per IP
+    ip = request.client.host if request.client else "unknown"
+    now = time.time()
+    rate_key = f"dream_{ip}"
+    _dream_rate_cache.setdefault(rate_key, [])
+    _dream_rate_cache[rate_key] = [t for t in _dream_rate_cache[rate_key] if now - t < 3600]
+    if len(_dream_rate_cache[rate_key]) >= 10:
+        raise HTTPException(429, "Too many dream interpretations. Let your subconscious rest and try again later.")
+    _dream_rate_cache[rate_key].append(now)
+
+    # Build cosmic context from reading data
+    cosmic_summary = _extract_cosmic_summary(req.reading_context)
+
+    # Build the dream interpretation prompt
+    prompt = _build_dream_prompt(req.dream_text, cosmic_summary, req.language)
+
+    # Call Gemini 2.0 Flash directly (same pattern as /chat)
+    try:
+        import os
+        import httpx
+
+        api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY", "")
+        if not api_key:
+            secrets_path = os.path.expanduser("~/.ai_secrets")
+            if os.path.exists(secrets_path):
+                with open(secrets_path) as f:
+                    for line in f:
+                        if "GOOGLE_API_KEY=" in line or "GEMINI_API_KEY=" in line:
+                            api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                            break
+
+        if not api_key:
+            raise ValueError("No Gemini API key configured")
+
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {
+                "temperature": 0.9,
+                "maxOutputTokens": 2000,
+            },
+        }
+
+        async with httpx.AsyncClient(timeout=45.0) as client:
+            resp = await client.post(url, json=payload)
+            resp.raise_for_status()
+            data = resp.json()
+
+        raw_text = data["candidates"][0]["content"]["parts"][0]["text"]
+        raw_text = _sanitize_reading(raw_text)
+    except Exception as e:
+        logger.error(f"Aethera dream interpretation failed: {e}")
+        raise HTTPException(502, "The dream realm is momentarily veiled. Please try again.")
+
+    # Parse the structured response
+    interpretation = ""
+    archetype = "The Journey"
+    cosmic_connections = ""
+    guidance = ""
+
+    try:
+        import re
+        # Strip markdown bold from section labels
+        raw_text = re.sub(
+            r'\*\*(ARCHETYPE|INTERPRETATION|SYMBOLS|COSMIC_CONNECTIONS|GUIDANCE)\*\*\s*:',
+            r'\1:', raw_text
+        )
+        raw_text = re.sub(
+            r'\*(ARCHETYPE|INTERPRETATION|SYMBOLS|COSMIC_CONNECTIONS|GUIDANCE)\*\s*:',
+            r'\1:', raw_text
+        )
+
+        # Extract ARCHETYPE
+        if "ARCHETYPE:" in raw_text:
+            archetype_line = raw_text.split("ARCHETYPE:", 1)[1].split("\n")[0].strip()
+            archetype = archetype_line.strip("*").strip().strip('"').strip()
+            if not archetype:
+                archetype = "The Journey"
+
+        # Extract INTERPRETATION
+        if "INTERPRETATION:" in raw_text:
+            interp_section = raw_text.split("INTERPRETATION:", 1)[1]
+            for marker in ["SYMBOLS:", "COSMIC_CONNECTIONS:", "GUIDANCE:"]:
+                if marker in interp_section:
+                    interp_section = interp_section.split(marker)[0]
+                    break
+            interpretation = interp_section.strip()
+
+        # Extract COSMIC_CONNECTIONS
+        if "COSMIC_CONNECTIONS:" in raw_text:
+            cc_section = raw_text.split("COSMIC_CONNECTIONS:", 1)[1]
+            if "GUIDANCE:" in cc_section:
+                cc_section = cc_section.split("GUIDANCE:")[0]
+            cosmic_connections = cc_section.strip()
+
+        # Extract GUIDANCE
+        if "GUIDANCE:" in raw_text:
+            guidance = raw_text.split("GUIDANCE:", 1)[1].strip()
+            # Remove any trailing CRITICAL RULES section if it leaked
+            if "CRITICAL RULES:" in guidance:
+                guidance = guidance.split("CRITICAL RULES:")[0].strip()
+            if "CRITICAL:" in guidance:
+                guidance = guidance.split("CRITICAL:")[0].strip()
+    except Exception:
+        # If parsing fails, use the raw text as interpretation
+        interpretation = raw_text
+
+    # Parse symbols
+    symbols = _parse_dream_symbols(raw_text)
+
+    # Fallback if no symbols were parsed
+    if not symbols:
+        symbols = [{"symbol": "the dream itself", "meaning": "A message from your subconscious", "cosmic_connection": "Connected to your current cosmic cycle"}]
+
+    # Fallback for empty sections
+    if not interpretation:
+        interpretation = raw_text
+    if not cosmic_connections:
+        cosmic_connections = "Your dream resonates with the cosmic energies currently surrounding you. Reflect on how its themes mirror your waking journey."
+    if not guidance:
+        guidance = "Sit with this dream. Write it down, revisit it before sleep tonight, and notice what feelings arise. Your subconscious is trying to deliver an important message."
+
+    # Determine which techniques were used
+    techniques_used = _determine_techniques_used(cosmic_summary)
+
+    return DreamResponse(
+        interpretation=interpretation,
+        symbols=symbols,
+        archetype=archetype,
+        cosmic_connections=cosmic_connections,
+        guidance=guidance,
+        techniques_used=techniques_used,
     )
