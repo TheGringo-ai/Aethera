@@ -183,24 +183,35 @@ function populateWelcomeScreen() {
 }
 
 function getReturnReading() {
-  const profile = userProfile || getProfile();
-  if (!profile || !profile.birthdate || !profile.name) {
-    // Profile incomplete — show form so user can fill in missing fields
+  // Check ALL sources for profile data: Firestore, localStorage, both
+  const fsProfile = userProfile || {};
+  const localProfile = getProfile() || {};
+  const name = fsProfile.name || localProfile.name || currentUser?.displayName || '';
+  const birthdate = fsProfile.birthdate || localProfile.birthdate || '';
+
+  if (!name || !birthdate) {
+    // Truly missing — show form
     hideAllScreens();
     showFullProfileForm();
-    // Pre-fill what we already have
-    if (profile?.name || currentUser?.displayName) {
-      document.getElementById('inp-name').value = profile?.name || currentUser?.displayName || '';
-    }
-    if (currentUser?.email) {
-      document.getElementById('inp-email').value = currentUser.email;
-    }
-    if (profile?.birthdate) {
-      document.getElementById('inp-birthdate').value = profile.birthdate;
-    }
+    if (name) document.getElementById('inp-name').value = name;
+    if (currentUser?.email) document.getElementById('inp-email').value = currentUser.email;
+    if (birthdate) document.getElementById('inp-birthdate').value = birthdate;
     checkReady();
     return;
   }
+
+  // Merge best data into userProfile so getReading(true) uses it
+  if (userProfile) {
+    if (!userProfile.name) userProfile.name = name;
+    if (!userProfile.birthdate) userProfile.birthdate = birthdate;
+    if (!userProfile.birth_time) userProfile.birth_time = fsProfile.birth_time || localProfile.birth_time || null;
+    if (!userProfile.location) userProfile.location = fsProfile.location || localProfile.location || null;
+    if (!userProfile.focus_area) userProfile.focus_area = fsProfile.focus_area || localProfile.focus_area || 'purpose';
+    if (!userProfile.personality_answers || userProfile.personality_answers.every(a => a === 0)) {
+      userProfile.personality_answers = localProfile.personality_answers || [0,0,0,0,0];
+    }
+  }
+
   // Profile is complete — go straight to reading
   getReading(true);
 }
