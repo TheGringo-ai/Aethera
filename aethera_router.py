@@ -67,6 +67,54 @@ _LANGUAGE_NAMES = {
 }
 
 
+# ─── Shared Gemini API Helper ─────────────────────────────────────────────────
+
+_gemini_api_key_cache = None
+
+def _get_gemini_key() -> str:
+    """Get Gemini API key from env or secrets file. Cached after first call."""
+    global _gemini_api_key_cache
+    if _gemini_api_key_cache:
+        return _gemini_api_key_cache
+    import os
+    key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY", "")
+    if not key:
+        secrets_path = os.path.expanduser("~/.ai_secrets")
+        if os.path.exists(secrets_path):
+            with open(secrets_path) as f:
+                for line in f:
+                    if "GOOGLE_API_KEY=" in line or "GEMINI_API_KEY=" in line:
+                        key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                        break
+    if key:
+        _gemini_api_key_cache = key
+    return key
+
+
+async def _call_gemini(prompt: str, temperature: float = 0.85, max_tokens: int = 2000, timeout: float = 60.0) -> str:
+    """Call Gemini 2.0 Flash directly. Returns the text response."""
+    import httpx
+    api_key = _get_gemini_key()
+    if not api_key:
+        raise ValueError("No Gemini API key configured")
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "temperature": temperature,
+            "maxOutputTokens": max_tokens,
+        },
+    }
+    async with httpx.AsyncClient(timeout=timeout) as client:
+        resp = await client.post(url, json=payload)
+        resp.raise_for_status()
+        data = resp.json()
+    return data["candidates"][0]["content"]["parts"][0]["text"]
+
+
+# ─── Models ───────────────────────────────────────────────────────────────────
+
 class AetheraRequest(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     email: Optional[str] = Field(default=None, max_length=200)
@@ -118,16 +166,9 @@ async def get_reading(req: AetheraRequest, request: Request, user: dict = Depend
     # Build AI synthesis prompt
     prompt = _build_synthesis_prompt(req.name, divination, req.focus_area, req.language)
 
-    # Call AI team for narrative synthesis
+    # Call Gemini for narrative synthesis
     try:
-        from products.fred_api.server import get_team
-        team = get_team()
-        result = await team.collaborate(
-            prompt=prompt,
-            context="",
-            mode="quick",  # Single best agent, fast + cheap
-        )
-        raw_answer = result.final_answer
+        raw_answer = await _call_gemini(prompt, temperature=0.9, max_tokens=2500, timeout=60.0)
     except Exception as e:
         logger.error(f"AI synthesis failed: {e}")
         raw_answer = _fallback_reading(req.name, divination, req.focus_area)
@@ -293,16 +334,10 @@ Weave these three cards into a compelling narrative reading:
 
 CRITICAL: Stay in character as a mystical tarot oracle at ALL times. NEVER include technical analysis, code, platform recommendations, engineering commentary, or AI-related content. Write ONLY the tarot reading.{lang_instruction}"""
 
-    # Call AI team for interpretation
+    # Call Gemini for interpretation
     try:
-        from products.fred_api.server import get_team
-        team = get_team()
-        result = await team.collaborate(
-            prompt=prompt,
-            context="",
-            mode="quick",
-        )
-        interpretation = _sanitize_reading(result.final_answer)
+        raw = await _call_gemini(prompt, temperature=0.9, max_tokens=1500, timeout=45.0)
+        interpretation = _sanitize_reading(raw)
     except Exception as e:
         logger.error(f"Tarot AI interpretation failed: {e}")
         # Fallback interpretation
@@ -993,10 +1028,7 @@ CRITICAL RULES:
 - If you feel compelled to add anything beyond the reading, STOP. The user only wants their cosmic love story.{lang_instruction}"""
 
     try:
-        from products.fred_api.server import get_team
-        team = get_team()
-        result = await team.collaborate(prompt=prompt, context="", mode="quick")
-        ai_narrative = result.final_answer
+        ai_narrative = await _call_gemini(prompt, temperature=0.85, max_tokens=1500, timeout=45.0)
     except Exception as e:
         logger.error(f"Compatibility AI narrative failed: {e}")
         ai_narrative = (
@@ -1275,36 +1307,7 @@ async def chat(req: ChatRequest, request: Request, user: dict = Depends(require_
     # Call Gemini directly for fast response (skip multi-agent orchestrator)
     try:
         import os
-        import httpx
-
-        api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY", "")
-        if not api_key:
-            secrets_path = os.path.expanduser("~/.ai_secrets")
-            if os.path.exists(secrets_path):
-                with open(secrets_path) as f:
-                    for line in f:
-                        if "GOOGLE_API_KEY=" in line or "GEMINI_API_KEY=" in line:
-                            api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
-                            break
-
-        if not api_key:
-            raise ValueError("No Gemini API key configured")
-
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": 0.85,
-                "maxOutputTokens": 800,
-            },
-        }
-
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            resp = await client.post(url, json=payload)
-            resp.raise_for_status()
-            data = resp.json()
-
-        reply = data["candidates"][0]["content"]["parts"][0]["text"]
+        reply = await _call_gemini(prompt, temperature=0.85, max_tokens=800, timeout=30.0)
         reply = _sanitize_reading(reply)
     except Exception as e:
         logger.error(f"Aethera chat failed: {e}")
@@ -1762,39 +1765,9 @@ async def dream_interpretation(
     # Build the dream interpretation prompt
     prompt = _build_dream_prompt(req.dream_text, cosmic_summary, req.language)
 
-    # Call Gemini 2.0 Flash directly (same pattern as /chat)
+    # Call Gemini
     try:
-        import os
-        import httpx
-
-        api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY", "")
-        if not api_key:
-            secrets_path = os.path.expanduser("~/.ai_secrets")
-            if os.path.exists(secrets_path):
-                with open(secrets_path) as f:
-                    for line in f:
-                        if "GOOGLE_API_KEY=" in line or "GEMINI_API_KEY=" in line:
-                            api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
-                            break
-
-        if not api_key:
-            raise ValueError("No Gemini API key configured")
-
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": 0.9,
-                "maxOutputTokens": 2000,
-            },
-        }
-
-        async with httpx.AsyncClient(timeout=45.0) as client:
-            resp = await client.post(url, json=payload)
-            resp.raise_for_status()
-            data = resp.json()
-
-        raw_text = data["candidates"][0]["content"]["parts"][0]["text"]
+        raw_text = await _call_gemini(prompt, temperature=0.9, max_tokens=2000, timeout=45.0)
         raw_text = _sanitize_reading(raw_text)
     except Exception as e:
         logger.error(f"Aethera dream interpretation failed: {e}")
