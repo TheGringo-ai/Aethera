@@ -410,15 +410,25 @@ function shareTabReading(tabId, title) {
     const astro = d.divination?.western_astrology;
     const hd = d.divination?.human_design;
     const num = d.divination?.numerology;
+    const cn = d.divination?.chinese_zodiac;
+    const celtic = d.divination?.celtic_tree;
     const shareData = {
       n: (d.name || '').split(' ')[0],
       a: d.cosmic_archetype || '',
+      t: d.tagline || '',
       s: astro?.sign ? (astro.symbol + ' ' + astro.sign) : '',
       m: astro?.moon_sign || '',
       r: astro?.rising_sign || '',
       h: hd?.type || '',
+      hp: hd?.profile || '',
+      ha: hd?.authority || '',
       l: num?.life_path?.number || '',
+      le: num?.expression?.number || '',
+      ls: num?.soul_urge?.number || '',
+      cn: cn ? (cn.element + ' ' + cn.animal) : '',
+      ct: celtic?.tree || '',
       au: d.aura_color || '',
+      sh: (d.shock_line || '').substring(0, 120),
     };
     try {
       const shareId = btoa(JSON.stringify(shareData)).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
