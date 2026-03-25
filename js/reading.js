@@ -555,19 +555,28 @@ function downloadBlob(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
+/* ════════════════════════════════════════════════════════════════
+   MEME SHARE CARDS — auto-generated from reading data
+   ════════════════════════════════════════════════════════════════ */
+let _memeIndex = 0;
+const _memeCount = 5;
+
 function populateShareCard(d) {
   if (!d) return;
   const div = d.divination;
-  document.getElementById('share-name').textContent = d.name;
-  document.getElementById('share-archetype').textContent = d.cosmic_archetype;
-  document.getElementById('share-tagline').textContent = d.tagline;
-
   const astro = div.western_astrology;
   const cn = div.chinese_zodiac;
   const num = div.numerology;
   const celtic = div.celtic_tree;
   const mayan = div.mayan_tzolkin;
+  const bio = div.biorhythm;
+  const hd = div.human_design;
+  const firstName = (d.name || '').split(' ')[0];
 
+  // Card 1: Cosmic Profile
+  document.getElementById('share-name').textContent = d.name;
+  document.getElementById('share-archetype').textContent = d.cosmic_archetype;
+  document.getElementById('share-tagline').textContent = d.tagline;
   document.getElementById('share-signs').innerHTML = `
     <div style="text-align:center"><div style="font-size:.55rem;text-transform:uppercase;letter-spacing:1px;color:#555577;margin-bottom:3px">Sun</div><div style="font-family:'Cormorant Garamond',serif;font-size:.9rem;color:#e0dfe8">${astro.symbol} ${astro.sign}</div></div>
     <div style="text-align:center"><div style="font-size:.55rem;text-transform:uppercase;letter-spacing:1px;color:#555577;margin-bottom:3px">Life Path</div><div style="font-family:'Cormorant Garamond',serif;font-size:.9rem;color:#e0dfe8">${num.life_path.number}</div></div>
@@ -576,4 +585,154 @@ function populateShareCard(d) {
     <div style="text-align:center"><div style="font-size:.55rem;text-transform:uppercase;letter-spacing:1px;color:#555577;margin-bottom:3px">Celtic</div><div style="font-family:'Cormorant Garamond',serif;font-size:.9rem;color:#e0dfe8">${celtic.tree}</div></div>
     <div style="text-align:center"><div style="font-size:.55rem;text-transform:uppercase;letter-spacing:1px;color:#555577;margin-bottom:3px">Mayan</div><div style="font-family:'Cormorant Garamond',serif;font-size:.9rem;color:#e0dfe8">${mayan.day_sign || mayan.full_name.split(' ').pop()}</div></div>
   `;
+
+  // Card 2: Shock Line Quote
+  const shockEl = document.getElementById('meme-shock');
+  if (shockEl) shockEl.textContent = '"' + (d.shock_line || '') + '"';
+  const shockAttr = document.getElementById('meme-shock-attr');
+  if (shockAttr) shockAttr.textContent = '— ' + firstName + ' | ' + astro.symbol + ' ' + astro.sign + ' | ' + d.cosmic_archetype;
+
+  // Card 3: Today's Guidance
+  const todayName = document.getElementById('meme-today-name');
+  if (todayName) todayName.textContent = firstName + '\'s Energy Today';
+  const todayText = document.getElementById('meme-today-text');
+  if (todayText) {
+    let guidance = d.today_guidance || '';
+    if (guidance.length > 250) guidance = guidance.substring(0, 247) + '...';
+    todayText.textContent = guidance;
+  }
+  const todayStats = document.getElementById('meme-today-stats');
+  if (todayStats && bio) {
+    const pColor = bio.physical > 50 ? '#00d4aa' : bio.physical < -50 ? '#ff6b6b' : '#ffd700';
+    const eColor = bio.emotional > 50 ? '#00d4aa' : bio.emotional < -50 ? '#ff6b6b' : '#ffd700';
+    const iColor = bio.intellectual > 50 ? '#00d4aa' : bio.intellectual < -50 ? '#ff6b6b' : '#ffd700';
+    todayStats.innerHTML = `
+      <div class="stat"><div class="stat-label">Physical</div><div class="stat-val" style="color:${pColor}">${Math.round(bio.physical)}%</div></div>
+      <div class="stat"><div class="stat-label">Emotional</div><div class="stat-val" style="color:${eColor}">${Math.round(bio.emotional)}%</div></div>
+      <div class="stat"><div class="stat-label">Mental</div><div class="stat-val" style="color:${iColor}">${Math.round(bio.intellectual)}%</div></div>
+    `;
+  }
+
+  // Card 4: Tension
+  const tensionEl = document.getElementById('meme-tension');
+  if (tensionEl) {
+    let tension = d.tension || '';
+    if (tension.length > 300) tension = tension.substring(0, 297) + '...';
+    tensionEl.textContent = tension;
+  }
+  const tensionAttr = document.getElementById('meme-tension-attr');
+  if (tensionAttr) tensionAttr.textContent = firstName + ' | ' + d.cosmic_archetype;
+
+  // Card 5: Human Design
+  if (hd) {
+    const hdType = document.getElementById('meme-hd-type');
+    if (hdType) hdType.textContent = hd.type;
+    const hdDetails = document.getElementById('meme-hd-details');
+    if (hdDetails) hdDetails.innerHTML = `
+      Strategy: <span style="color:#ffd700">${hd.strategy}</span><br>
+      Authority: <span style="color:#ffd700">${hd.authority}</span><br>
+      Profile: <span style="color:#ffd700">${hd.profile} ${hd.profile_name || ''}</span><br>
+      Signature: <span style="color:#00d4aa">${hd.signature}</span>
+    `;
+    const hdStrategy = document.getElementById('meme-hd-strategy');
+    if (hdStrategy) hdStrategy.textContent = hd.strategy_description || '';
+  }
+
+  // Reset carousel to first card
+  memeGoTo(0);
+}
+
+function memeGoTo(idx) {
+  _memeIndex = Math.max(0, Math.min(idx, _memeCount - 1));
+  document.querySelectorAll('.meme-card').forEach((c, i) => {
+    c.classList.toggle('active', i === _memeIndex);
+  });
+  document.querySelectorAll('.meme-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === _memeIndex);
+  });
+}
+
+function memeNext() { memeGoTo(_memeIndex + 1); }
+function memePrev() { memeGoTo(_memeIndex - 1); }
+
+function saveMemeCard() {
+  const cards = document.querySelectorAll('.meme-card');
+  const card = cards[_memeIndex];
+  if (!card || typeof html2canvas === 'undefined') return;
+
+  html2canvas(card, {
+    backgroundColor: '#0a0a1a',
+    scale: 3,
+    useCORS: true,
+    width: 320,
+  }).then(canvas => {
+    canvas.toBlob(blob => {
+      const cardName = card.dataset.card || 'cosmic';
+      if (navigator.share && navigator.canShare && navigator.canShare({files: [new File([blob], 'a.png', {type: 'image/png'})]})) {
+        navigator.share({
+          files: [new File([blob], `aethera-${cardName}.png`, {type: 'image/png'})],
+          title: 'My Aethera Reading',
+        }).catch(() => {
+          downloadBlob(blob, `aethera-${cardName}.png`);
+        });
+      } else {
+        downloadBlob(blob, `aethera-${cardName}.png`);
+      }
+    }, 'image/png');
+  });
+}
+
+function shareMemeCard() {
+  const d = readingData;
+  if (!d) { saveMemeCard(); return; }
+  shareTabReading('tab-share', 'My Cosmic Reading');
+}
+
+function shareMemeTo(platform) {
+  const d = readingData;
+  if (!d) return;
+
+  // Build share text
+  const astro = d.divination?.western_astrology;
+  const hd = d.divination?.human_design;
+  const num = d.divination?.numerology;
+  const cn = d.divination?.chinese_zodiac;
+  const lines = [];
+  if (d.cosmic_archetype) lines.push(d.cosmic_archetype);
+  if (astro?.sign) lines.push(astro.symbol + ' ' + astro.sign);
+  if (hd?.type) lines.push('Human Design: ' + hd.type);
+  if (num?.life_path) lines.push('Life Path ' + num.life_path.number);
+  if (cn?.animal) lines.push(cn.element + ' ' + cn.animal);
+  lines.push('');
+  lines.push('Discover your cosmic identity at aethera.live');
+  const text = lines.join('\n');
+  const encoded = encodeURIComponent(text);
+  const url = encodeURIComponent('https://aethera.live');
+
+  // Copy text to clipboard first
+  navigator.clipboard.writeText(text).catch(() => {});
+
+  // Also save the card image to downloads
+  saveMemeCard();
+
+  switch(platform) {
+    case 'instagram':
+      alert('Card saved! Open Instagram, create a Story or Post, and add the saved image. Your reading text has been copied — paste it in the caption.\n\n#aethera #cosmicprofile #astrology');
+      break;
+    case 'tiktok':
+      alert('Card saved! Open TikTok, create a new post with the saved image. Your reading text has been copied for the caption.');
+      break;
+    case 'twitter':
+      window.open('https://twitter.com/intent/tweet?text=' + encoded + '%20' + url, '_blank');
+      break;
+    case 'facebook':
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + url + '&quote=' + encoded, '_blank');
+      break;
+    case 'whatsapp':
+      window.open('https://wa.me/?text=' + encoded + '%20https://aethera.live', '_blank');
+      break;
+    case 'snapchat':
+      alert('Card saved! Open Snapchat and share the saved image as a Snap or Story.');
+      break;
+  }
 }

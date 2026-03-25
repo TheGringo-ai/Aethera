@@ -29,7 +29,7 @@
 <link rel="manifest" href='data:application/json,{"name":"Aethera — Cosmic Profile","short_name":"Aethera","start_url":"/v1/aethera/app","display":"standalone","background_color":"#0a0a1a","theme_color":"#0a0a1a","icons":[{"src":"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>✨</text></svg>","sizes":"any","type":"image/svg+xml"}]}'>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/v1/aethera/assets/css/styles.css?v=20260324d">
+<link rel="stylesheet" href="/v1/aethera/assets/css/styles.css?v=20260324e">
 </head>
 <body>
 
@@ -1042,33 +1042,116 @@
 
   <!-- TAB: Share -->
   <div class="tab-pane" id="tab-share">
-    <div style="max-width:420px;margin:0 auto;padding:40px 16px;text-align:center">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--text);margin-bottom:8px" data-i18n="share_tagline">More awaits...</div>
-      <div style="color:var(--muted);font-size:.9rem;margin-bottom:24px" data-i18n="share_sub">Share your cosmic profile with friends</div>
-      <div id="shareCard" style="width:320px;min-height:520px;margin:0 auto 24px;border-radius:24px;overflow:hidden;background:linear-gradient(165deg,#1a0a40 0%,#0a2838 40%,#0d1a2e 70%,#120828 100%);padding:36px 24px 24px;text-align:center;position:relative;border:1px solid #2a2a5a33">
-        <div style="position:absolute;inset:0;background:radial-gradient(circle at 25% 15%,#7c5bf518,transparent 50%),radial-gradient(circle at 75% 85%,#00d4aa10,transparent 50%);pointer-events:none"></div>
-        <div style="position:relative;z-index:1">
-          <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:4px;color:#555577;margin-bottom:20px">&#10022; Cosmic Profile &#10022;</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#ffd700;letter-spacing:3px;text-transform:uppercase;margin-bottom:4px" id="share-name"></div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:#ffd700;line-height:1.2;margin-bottom:12px" id="share-archetype"></div>
-          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:#8888aa;margin-bottom:24px;padding:0 8px" id="share-tagline"></div>
-          <div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,#ffd70044,transparent);margin:0 auto 20px"></div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px;margin-bottom:24px" id="share-signs"></div>
-          <div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,#ffd70044,transparent);margin:0 auto 16px"></div>
-          <div style="font-size:.6rem;color:#444466;letter-spacing:3px;text-transform:uppercase">aethera.live</div>
+    <div style="max-width:420px;margin:0 auto;padding:24px 16px;text-align:center">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--text);margin-bottom:4px">Share Your Reading</div>
+      <div style="color:var(--muted);font-size:.85rem;margin-bottom:20px">Swipe to pick a card, then share it everywhere</div>
+
+      <!-- Meme Card Carousel -->
+      <div class="meme-carousel">
+        <button class="meme-nav meme-prev" onclick="memePrev()">&#8249;</button>
+        <div class="meme-viewport">
+
+          <!-- Card 1: Cosmic Profile -->
+          <div class="meme-card active" id="shareCard" data-card="profile">
+            <div class="meme-bg"></div>
+            <div class="meme-content">
+              <div class="meme-label">&#10022; Cosmic Profile &#10022;</div>
+              <div class="meme-name" id="share-name"></div>
+              <div class="meme-archetype" id="share-archetype"></div>
+              <div class="meme-tagline" id="share-tagline"></div>
+              <div class="meme-divider"></div>
+              <div class="meme-signs" id="share-signs"></div>
+              <div class="meme-divider"></div>
+              <div class="meme-footer">aethera.live</div>
+            </div>
+          </div>
+
+          <!-- Card 2: Shock Line Quote -->
+          <div class="meme-card" data-card="shock">
+            <div class="meme-bg meme-bg-shock"></div>
+            <div class="meme-content">
+              <div class="meme-label">&#128302; Cosmic Truth &#128302;</div>
+              <div class="meme-quote" id="meme-shock"></div>
+              <div class="meme-divider"></div>
+              <div class="meme-attr" id="meme-shock-attr"></div>
+              <div class="meme-footer">aethera.live</div>
+            </div>
+          </div>
+
+          <!-- Card 3: Today's Guidance -->
+          <div class="meme-card" data-card="today">
+            <div class="meme-bg meme-bg-today"></div>
+            <div class="meme-content">
+              <div class="meme-label">&#9889; Today's Energy &#9889;</div>
+              <div class="meme-today-name" id="meme-today-name"></div>
+              <div class="meme-today-text" id="meme-today-text"></div>
+              <div class="meme-divider"></div>
+              <div class="meme-today-stats" id="meme-today-stats"></div>
+              <div class="meme-footer">aethera.live</div>
+            </div>
+          </div>
+
+          <!-- Card 4: Tension / Inner Conflict -->
+          <div class="meme-card" data-card="tension">
+            <div class="meme-bg meme-bg-tension"></div>
+            <div class="meme-content">
+              <div class="meme-label">&#128293; Your Inner Tension &#128293;</div>
+              <div class="meme-tension-text" id="meme-tension"></div>
+              <div class="meme-divider"></div>
+              <div class="meme-attr" id="meme-tension-attr"></div>
+              <div class="meme-footer">aethera.live</div>
+            </div>
+          </div>
+
+          <!-- Card 5: Human Design -->
+          <div class="meme-card" data-card="hd">
+            <div class="meme-bg meme-bg-hd"></div>
+            <div class="meme-content">
+              <div class="meme-label">&#9878; Human Design &#9878;</div>
+              <div class="meme-hd-type" id="meme-hd-type"></div>
+              <div class="meme-hd-details" id="meme-hd-details"></div>
+              <div class="meme-divider"></div>
+              <div class="meme-hd-strategy" id="meme-hd-strategy"></div>
+              <div class="meme-footer">aethera.live</div>
+            </div>
+          </div>
+
         </div>
+        <button class="meme-nav meme-next" onclick="memeNext()">&#8250;</button>
       </div>
-      <div class="share-buttons" style="margin-bottom:16px">
-        <button class="share-btn screenshot-btn" onclick="saveShareCard()" style="font-size:.9rem">&#128248; Save Card</button>
-        <button class="share-btn" onclick="copyShare()" id="copyBtn" data-i18n="share_copy">&#128203; Copy Profile</button>
-        <button class="share-btn" onclick="shareNative()" data-i18n="share_native">&#128228; Share</button>
+
+      <!-- Card Indicator Dots -->
+      <div class="meme-dots" id="memeDots">
+        <span class="meme-dot active" onclick="memeGoTo(0)"></span>
+        <span class="meme-dot" onclick="memeGoTo(1)"></span>
+        <span class="meme-dot" onclick="memeGoTo(2)"></span>
+        <span class="meme-dot" onclick="memeGoTo(3)"></span>
+        <span class="meme-dot" onclick="memeGoTo(4)"></span>
       </div>
-      <div style="margin-top:40px;padding:24px 16px;background:var(--card);border:1px solid var(--border);border-radius:16px;text-align:center">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--text);margin-bottom:8px">Come back tomorrow for your daily cosmic update</div>
-        <p style="color:var(--muted);font-size:.82rem;line-height:1.6;margin-bottom:16px">Your energy shifts every day — biorhythms, transits, and the Tzolkin cycle will have a new message for you.</p>
+
+      <!-- Share Actions -->
+      <div class="meme-actions">
+        <button class="meme-action-btn meme-save" onclick="saveMemeCard()">&#128248; Save Image</button>
+        <button class="meme-action-btn meme-share" onclick="shareMemeCard()">&#128228; Share</button>
+      </div>
+
+      <!-- Quick Social Buttons -->
+      <div class="meme-social-row">
+        <button class="meme-social-btn" onclick="shareMemeTo('instagram')" title="Instagram"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></button>
+        <button class="meme-social-btn" onclick="shareMemeTo('tiktok')" title="TikTok"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-.81-.06l-.38.04z"/></svg></button>
+        <button class="meme-social-btn" onclick="shareMemeTo('twitter')" title="X / Twitter"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
+        <button class="meme-social-btn" onclick="shareMemeTo('facebook')" title="Facebook"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></button>
+        <button class="meme-social-btn" onclick="shareMemeTo('whatsapp')" title="WhatsApp"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></button>
+        <button class="meme-social-btn" onclick="shareMemeTo('snapchat')" title="Snapchat"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12.922-.214.04-.012.06-.012.08-.012.26 0 .479.12.58.32.1.18.06.399-.06.58-.12.18-.36.32-.659.42-.18.06-.38.12-.58.159l-.06.018a2.89 2.89 0 00-.72.24c-.24.12-.42.3-.479.54-.06.24.06.54.36.84.42.42.78.72 1.14 1.02.36.24.72.48 1.02.78.3.3.48.66.42 1.02-.06.3-.3.6-.66.84-.48.3-1.14.48-1.92.54h-.06c-.06.06-.12.18-.18.36-.06.12-.12.24-.24.36-.3.24-.72.36-1.26.42-.36.06-.78.06-1.2.12-.36.06-.72.12-1.14.24-.54.18-1.08.48-1.68.78-.78.42-1.74.9-3.24.9h-.06c-1.5 0-2.46-.48-3.24-.9-.6-.3-1.14-.6-1.68-.78-.42-.12-.78-.18-1.14-.24-.42-.06-.84-.06-1.2-.12-.54-.06-.96-.18-1.26-.42-.12-.12-.18-.24-.24-.36-.06-.18-.12-.3-.18-.36h-.06c-.78-.06-1.44-.24-1.92-.54-.36-.24-.6-.54-.66-.84-.06-.36.12-.72.42-1.02.3-.3.66-.54 1.02-.78.36-.3.72-.6 1.14-1.02.3-.3.42-.6.36-.84-.06-.24-.24-.42-.48-.54a2.89 2.89 0 00-.72-.24l-.06-.018c-.2-.04-.4-.1-.58-.16-.3-.1-.54-.24-.66-.42-.12-.18-.16-.4-.06-.58.1-.2.32-.32.58-.32.02 0 .04 0 .08.012.26.094.62.198.92.214.2 0 .33-.045.4-.09a9.89 9.89 0 01-.03-.51l-.003-.06c-.104-1.628-.23-3.654.3-4.847C6.447 1.069 9.806.793 10.796.793h1.41z"/></svg></button>
+      </div>
+
+      <!-- Tomorrow reminder -->
+      <div style="margin-top:28px;padding:20px 16px;background:var(--card);border:1px solid var(--border);border-radius:16px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--text);margin-bottom:6px">Come back tomorrow</div>
+        <p style="color:var(--muted);font-size:.8rem;line-height:1.5;margin-bottom:12px">Your energy shifts daily — new transits, biorhythms, and guidance await.</p>
         <button onclick="requestReminder()" id="reminderBtn" style="padding:10px 22px;background:linear-gradient(135deg,#2a1a4a,#1a2a3a);border:1px solid var(--gold-dim);border-radius:12px;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all .3s">&#128276; Remind Me</button>
       </div>
-      <div class="restart-link" onclick="newReading()" data-i18n="restart" style="margin-top:20px">Get another reading</div>
+      <div class="restart-link" onclick="newReading()" data-i18n="restart" style="margin-top:16px">Get another reading</div>
     </div>
   </div>
 
@@ -1088,20 +1171,20 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <!-- Aethera JS modules (load order matters — defer preserves order) -->
-<script src="/v1/aethera/assets/js/config.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/utils.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/stars.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/voice.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/navigation.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/divination-ui.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/reading.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/tarot.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/palm.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/compatibility.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/chat.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/dream.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/settings.js?v=20260324d" defer></script>
-<script src="/v1/aethera/assets/js/auth.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/config.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/utils.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/stars.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/voice.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/navigation.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/divination-ui.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/reading.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/tarot.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/palm.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/compatibility.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/chat.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/dream.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/settings.js?v=20260324e" defer></script>
+<script src="/v1/aethera/assets/js/auth.js?v=20260324e" defer></script>
 </body>
 </html>
 <!-- CI/CD test -->
