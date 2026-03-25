@@ -29,7 +29,7 @@
 <link rel="manifest" href='data:application/json,{"name":"Aethera — Cosmic Profile","short_name":"Aethera","start_url":"/v1/aethera/app","display":"standalone","background_color":"#0a0a1a","theme_color":"#0a0a1a","icons":[{"src":"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>✨</text></svg>","sizes":"any","type":"image/svg+xml"}]}'>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/v1/aethera/assets/css/styles.css?v=20260324c">
+<link rel="stylesheet" href="/v1/aethera/assets/css/styles.css?v=20260324d">
 </head>
 <body>
 
@@ -45,99 +45,190 @@
   <!-- Hero Section -->
   <img src="/v1/aethera/assets/hero" alt="Aethera Oracle" class="landing-hero-img">
   <h1 class="landing-title">Aethera</h1>
-  <p class="landing-subtitle">Your Cosmic Identity, Revealed</p>
-  <p class="landing-tagline">9 divination systems. One powerful AI reading.<br>Discover who you truly are.</p>
+  <p class="landing-subtitle">The Most Powerful Cosmic Reading on Earth</p>
+  <p class="landing-tagline">9 ancient divination systems. AI-powered dream interpretation. Tarot. Palm reading. Human Design. All personalized to your exact birth data.</p>
 
-  <!-- CTA Buttons -->
-  <button class="landing-cta" onclick="showAuthModal('signup')">Start Free — All Features Unlocked</button>
-  <div class="landing-sub-cta">No credit card required</div>
+  <!-- CTA -->
+  <button class="landing-cta" onclick="showAuthModal('signup')">Get Your Free Reading</button>
+  <div class="landing-sub-cta">Free during beta &mdash; no credit card required</div>
   <div style="margin-top:12px;font-size:.9rem;color:var(--muted)">
     Already have an account? <a onclick="showAuthModal('signin')" style="color:var(--gold);cursor:pointer;text-decoration:underline;font-weight:500">Sign in</a>
   </div>
 
-  <!-- What You Get: Free Tier -->
-  <div class="landing-section">
-    <h2 class="landing-section-title">Free During Beta</h2>
-    <p class="landing-section-sub">Everything unlocked. Free while in beta.</p>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="fc-icon">&#128302;</div>
-        <div class="fc-title">3 Readings Daily</div>
-        <div class="fc-desc">Full cosmic profile powered by 8 divination systems</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon">&#127183;</div>
-        <div class="fc-title">Tarot Cards</div>
-        <div class="fc-desc">Draw past, present &amp; future cards with AI interpretation</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon">&#9995;</div>
-        <div class="fc-title">Palm Reading</div>
-        <div class="fc-desc">Upload your hand &amp; get AI-powered line analysis</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon">&#10084;&#65039;</div>
-        <div class="fc-title">Compatibility</div>
-        <div class="fc-desc">Check cosmic chemistry between any two people</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon">&#127911;</div>
-        <div class="fc-title">AI Voices</div>
-        <div class="fc-desc">Hear your reading in Shimmer, Nova, Echo &amp; more</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon">&#128302;</div>
-        <div class="fc-title">Aura Photo</div>
-        <div class="fc-desc">See your energy field glow around your selfie</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Divination Systems -->
-  <div class="landing-section">
-    <h2 class="landing-section-title">9 Systems, One Reading</h2>
-    <p class="landing-section-sub">Every reading synthesizes wisdom from across civilizations</p>
-    <div class="systems-list">
-      <div class="system-pill"><span>&#128290;</span> Numerology</div>
-      <div class="system-pill"><span>&#9800;</span> Western Astrology</div>
-      <div class="system-pill"><span>&#128009;</span> Chinese Zodiac</div>
-      <div class="system-pill"><span>&#127795;</span> Celtic Tree</div>
-      <div class="system-pill"><span>&#127963;</span> Mayan Tzolkin</div>
-      <div class="system-pill"><span>&#128302;</span> Aura &amp; Energy</div>
-      <div class="system-pill"><span>&#9878;</span> Human Design</div>
-      <div class="system-pill"><span>&#127761;</span> Moon Phase</div>
-      <div class="system-pill"><span>&#9889;</span> Biorhythms</div>
-    </div>
-  </div>
-
-  <!-- Social Proof -->
-  <div class="proof-cards">
+  <!-- Social Proof Bar -->
+  <div class="proof-cards" style="margin-top:32px">
     <div class="proof-card">
-      <div class="pc-num">10</div>
-      <div class="pc-text">divination systems in one reading</div>
+      <div class="pc-num">9</div>
+      <div class="pc-text">divination systems in every reading</div>
     </div>
     <div class="proof-card">
       <div class="pc-num">8</div>
       <div class="pc-text">languages supported</div>
     </div>
     <div class="proof-card">
-      <div class="pc-num">AI</div>
-      <div class="pc-text">powered personal insights</div>
+      <div class="pc-num">100%</div>
+      <div class="pc-text">free during beta</div>
     </div>
   </div>
 
-  <!-- Bottom CTA -->
-  <div class="landing-section" style="padding-bottom:40px">
-    <h2 class="landing-section-title" style="font-size:1.6rem">Ready to discover your cosmic identity?</h2>
-    <button class="landing-cta" onclick="showAuthModal('signup')" style="margin-top:16px">Create Free Account</button>
-    <div class="landing-sub-cta">Free during beta</div>
+  <!-- What Makes Aethera Different -->
+  <div class="landing-section">
+    <h2 class="landing-section-title">Not Just Another Horoscope App</h2>
+    <p class="landing-section-sub">Aethera synthesizes 9 divination systems into one deeply personal AI reading that knows you better than you know yourself.</p>
+    <div style="max-width:420px;margin:0 auto;text-align:left">
+      <div class="landing-diff-item"><span style="color:var(--gold);font-weight:700;margin-right:8px">Other apps:</span><span style="color:var(--dim)">"You're a Pisces. You're emotional."</span></div>
+      <div class="landing-diff-item" style="margin-top:10px"><span style="color:var(--accent);font-weight:700;margin-right:8px">Aethera:</span><span style="color:var(--text)">Your Life Path 7 craves solitude, but your Expression 1 demands leadership. As a Water Ox Manifestor with Emotional Authority, your inner tension between seeking and leading is the source of your greatest power.</span></div>
+    </div>
   </div>
 
-  <div style="margin-top:12px;font-size:.78rem;color:var(--dim)">Feedback? <a href="mailto:fred@aethera.live" style="color:var(--gold)">fred@aethera.live</a></div>
-  <div style="margin-top:16px;font-size:.7rem;color:var(--dim)">
-    <a href="https://github.com/TheGringo-ai/Aethera" target="_blank" rel="noopener" style="color:var(--dim);text-decoration:underline">Open Source</a>
-    <span style="margin:0 6px">|</span>
-    <span>&copy; 2026 Aethera</span>
+  <!-- Feature Showcase -->
+  <div class="landing-section">
+    <h2 class="landing-section-title">Everything You Get &mdash; Free</h2>
+    <p class="landing-section-sub">Tools that transform how you understand yourself</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-icon">&#128302;</div>
+        <div class="fc-title">Daily Cosmic Reading</div>
+        <div class="fc-desc">Your birth data analyzed through 9 ancient systems, synthesized by AI into one powerful narrative unique to you</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#127769;</div>
+        <div class="fc-title">Dream Interpretation</div>
+        <div class="fc-desc">Describe your dream and get a multi-layered analysis using Jungian archetypes, your natal chart, and your Human Design</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#127183;</div>
+        <div class="fc-title">AI Tarot Readings</div>
+        <div class="fc-desc">Draw 3 cards &mdash; Past, Present, Future &mdash; with AI interpretation woven into your cosmic profile</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#9995;</div>
+        <div class="fc-title">Palm Reading</div>
+        <div class="fc-desc">Photograph your hand and receive AI-powered analysis of your life, heart, and head lines</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#10084;&#65039;</div>
+        <div class="fc-title">Cosmic Compatibility</div>
+        <div class="fc-desc">Compare two people across all 9 systems &mdash; see where you align, clash, and create magic together</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#10024;</div>
+        <div class="fc-title">Celestial Guide</div>
+        <div class="fc-desc">Chat with your personal AI oracle. Ask anything about your chart, transits, Human Design, or what the stars say today</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#9878;</div>
+        <div class="fc-title">Human Design</div>
+        <div class="fc-desc">Discover your Type, Strategy, Authority, and Profile &mdash; the blueprint for how you're designed to make decisions</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">&#127911;</div>
+        <div class="fc-title">Voice Narration</div>
+        <div class="fc-desc">Hear your reading spoken aloud in 6 premium AI voices &mdash; close your eyes and let the cosmos speak to you</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9 Systems Deep Dive -->
+  <div class="landing-section">
+    <h2 class="landing-section-title">9 Ancient Systems. One Reading.</h2>
+    <p class="landing-section-sub">Each reading weaves wisdom from every tradition into a single, unified portrait of who you are</p>
+    <div class="systems-grid">
+      <div class="system-card">
+        <div class="sc-icon">&#9800;</div>
+        <div class="sc-name">Western Astrology</div>
+        <div class="sc-detail">Full natal chart with Sun, Moon, Rising, all planetary placements, aspects, and real-time transits</div>
+      </div>
+      <div class="system-card">
+        <div class="sc-icon">&#128290;</div>
+        <div class="sc-name">Numerology</div>
+        <div class="sc-detail">Life Path, Expression, and Soul Urge numbers with deep personality analysis</div>
+      </div>
+      <div class="system-card">
+        <div class="sc-icon">&#128009;</div>
+        <div class="sc-name">Chinese Zodiac</div>
+        <div class="sc-detail">Your animal sign, element, and how Eastern wisdom complements your Western chart</div>
+      </div>
+      <div class="system-card">
+        <div class="sc-icon">&#9878;</div>
+        <div class="sc-name">Human Design</div>
+        <div class="sc-detail">Type, Strategy, Authority, Profile, defined centers, and conscious/unconscious gates</div>
+      </div>
+      <div class="system-card">
+        <div class="sc-icon">&#127795;</div>
+        <div class="sc-name">Celtic Tree Astrology</div>
+        <div class="sc-detail">Your sacred tree, personality archetype, spirit animal, and gemstone</div>
+      </div>
+      <div class="system-card">
+        <div class="sc-icon">&#127963;</div>
+        <div class="sc-name">Mayan Tzolkin</div>
+        <div class="sc-detail">Your day sign, trecena energy, element, and shadow side from the sacred calendar</div>
+      </div>
+      <div class="system-card">
+        <div class="sc-icon">&#128302;</div>
+        <div class="sc-name">Aura &amp; Energy</div>
+        <div class="sc-detail">Your dominant aura color, energy signature, and what it reveals about your presence</div>
+      </div>
+      <div class="system-card">
+        <div class="sc-icon">&#127761;</div>
+        <div class="sc-name">Moon Phase</div>
+        <div class="sc-detail">Current lunar phase, birth moon phase, and how the moon shapes your emotional rhythm</div>
+      </div>
+      <div class="system-card">
+        <div class="sc-icon">&#9889;</div>
+        <div class="sc-name">Biorhythms</div>
+        <div class="sc-detail">Physical, emotional, and intellectual cycles &mdash; know exactly when to push and when to rest</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="landing-section">
+    <h2 class="landing-section-title">How It Works</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title">Create Your Free Account</div>
+        <div class="step-desc">Sign up with Google or email in seconds</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">Enter Your Birth Data</div>
+        <div class="step-desc">Name, date, time, and location &mdash; once. We save it forever.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">Get Your Reading</div>
+        <div class="step-desc">9 systems analyzed, AI-synthesized into a reading that will stop you in your tracks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonial-style hook -->
+  <div class="landing-section">
+    <div class="landing-quote">
+      <div style="font-size:2rem;margin-bottom:12px">&#10024;</div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--text);line-height:1.7;font-style:italic;max-width:400px;margin:0 auto">"This told me things about myself I've never seen in any astrology app. The Human Design section alone was worth it."</p>
+      <div style="margin-top:12px;font-size:.85rem;color:var(--gold)">Beta User</div>
+    </div>
+  </div>
+
+  <!-- Final CTA -->
+  <div class="landing-section" style="padding-bottom:20px">
+    <h2 class="landing-section-title" style="font-size:1.6rem">Your cosmic blueprint is waiting</h2>
+    <p class="landing-section-sub">Join the beta. Get unlimited access to every feature. Completely free.</p>
+    <button class="landing-cta" onclick="showAuthModal('signup')" style="margin-top:16px">Get Your Free Reading Now</button>
+    <div class="landing-sub-cta">Takes 30 seconds to sign up</div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border2)">
+    <div style="font-size:.78rem;color:var(--dim)">Questions? <a href="mailto:fred@aethera.live" style="color:var(--gold)">fred@aethera.live</a></div>
+    <div style="margin-top:10px;font-size:.7rem;color:var(--dim)">
+      <span>&copy; 2026 Aethera</span>
+      <span style="margin:0 6px">|</span>
+      <span>Entertainment &amp; self-reflection. Not professional advice.</span>
+    </div>
   </div>
 
 </div>
@@ -997,20 +1088,20 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <!-- Aethera JS modules (load order matters — defer preserves order) -->
-<script src="/v1/aethera/assets/js/config.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/utils.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/stars.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/voice.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/navigation.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/divination-ui.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/reading.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/tarot.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/palm.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/compatibility.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/chat.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/dream.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/settings.js?v=20260324c" defer></script>
-<script src="/v1/aethera/assets/js/auth.js?v=20260324c" defer></script>
+<script src="/v1/aethera/assets/js/config.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/utils.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/stars.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/voice.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/navigation.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/divination-ui.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/reading.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/tarot.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/palm.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/compatibility.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/chat.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/dream.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/settings.js?v=20260324d" defer></script>
+<script src="/v1/aethera/assets/js/auth.js?v=20260324d" defer></script>
 </body>
 </html>
 <!-- CI/CD test -->
