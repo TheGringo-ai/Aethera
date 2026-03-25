@@ -83,6 +83,7 @@ async function getReading(fromWelcome) {
 
     renderResults(readingData);
     applyFeatureGating();
+    navTo('home');
     loadScreen.classList.remove('active');
     document.getElementById('results-screen').classList.add('active');
 

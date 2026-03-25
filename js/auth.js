@@ -198,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof loadFirestoreSettings === 'function') loadFirestoreSettings();
       if (typeof applyFeatureGating === 'function') applyFeatureGating();
       hideAllScreens();
+      navTo('home');
       showWelcomeScreen();
       checkProfileCompletion();
     } else {
