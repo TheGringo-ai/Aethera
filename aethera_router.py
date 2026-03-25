@@ -1564,7 +1564,7 @@ async def serve_asset(filename: str):
     from pathlib import Path
     # Map asset names to files
     asset_map = {
-        "hero": "aethera-hero.jpg",
+        "hero": "aethera-hero.webp",
     }
     actual = asset_map.get(filename, filename)
     # Security: only serve from the aethera directory or cards subdirectory
